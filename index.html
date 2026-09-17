@@ -97,6 +97,33 @@ button { font-family: inherit; }
 .map-box { overflow: hidden; margin: 0 -4px; }
 .map-box svg { width: 100%; height: auto; display: block; }
 .map-tip { font-size: .75rem; color: var(--muted); margin-top: 8px; }
+.live-map {
+  border: 1.5px solid #2a2218;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 260px;
+  margin-bottom: 10px;
+  background: #d7e4ea;
+}
+.live-map iframe { width: 100%; height: 100%; border: 0; }
+.stay-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.stay-card {
+  display: block;
+  border: 1.5px solid #2a2218;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  background: #fff;
+}
+.stay-card iframe { width: 100%; height: 108px; border: 0; pointer-events: none; }
+.stay-card p { margin: 0; padding: 7px 8px 8px; font-size: .75rem; font-weight: 700; line-height: 1.3; }
+.stay-card span { display: block; font-weight: 500; color: var(--muted); font-size: .68rem; }
+.map-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 10px; }
 .book {
   border-bottom: 1px dashed var(--line); padding: 12px 0;
 }
@@ -199,7 +226,7 @@ svg a { cursor: pointer; }
 <div class="wrap">
   <header class="kicker">
     <h1>澳东海岸 7 日</h1>
-    <small>2026.9.29 – 10.5 · 离线可看</small>
+    <small>2026.9.29 – 10.7 · 离线可看</small>
   </header>
 
   <section id="now">
@@ -215,9 +242,14 @@ svg a { cursor: pointer; }
 
   <section id="map" class="card">
     <h2><span class="num">2</span>整趟路线与住宿</h2>
+    <div class="live-map">
+      <iframe id="trip-map" title="整趟路线地图" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="map-actions" id="map-actions"></div>
+    <div class="stay-grid" id="stay-grid"></div>
+    <p class="map-tip">上图是谷歌地图，没网时看下面的示意。房子 = 当晚住宿。点地点或住宿卡片可导航。</p>
     <div class="map-box" id="overview"></div>
     <div class="legend" id="legend"></div>
-    <p class="map-tip">手绘示意，不按精确比例。房子 = 当晚住宿。点地点可导航。</p>
   </section>
 
   <section id="book" class="card">
@@ -241,9 +273,8 @@ svg a { cursor: pointer; }
   <footer class="foot">
     <p><b>你需要亲手做的事（一次写清）</b></p>
     <ol>
-      <li>用手机浏览器打开本页，点分享 → <b>添加到主屏幕</b>。之后没网也能看（导航仍需网络/地图 App）。</li>
-      <li>把机票、租车、酒店的确认号 / 地址 / 电话，填进本文件中部 <code>BOOKINGS</code> 那几行（用备忘录或电脑改完，重新发给手机）。</li>
-      <li>要让任何人点开就能看：打开 <b>https://app.netlify.com/drop</b>，把 <code>index.html</code> 拖进去，把生成的 <code>*.netlify.app</code> 链接发出去。或把文件上传到 GitHub 公开仓库，在 Settings → Pages 选 main 分支，网址是 <code>https://你的用户名.github.io/仓库名/</code>。</li>
+      <li>机票和租车已经写进页面。酒店发我后继续补。改完把 <code>index.html</code> 再推到 GitHub，Pages 才会更新。</li>
+      <li>用手机浏览器打开本页，点分享 → <b>添加到主屏幕</b>。国内打不开 github.io 时，把文件拖到 <b>https://app.netlify.com/drop</b>。</li>
     </ol>
   </footer>
 </div>
@@ -262,59 +293,78 @@ svg a { cursor: pointer; }
 
   /* ===== 改预订信息只动这里 ===== */
   const BOOKINGS = {
-    flightIn: {
-      status: "wait",
-      title: "去程机票",
-      when: "2026-09-29 11:45 抵达",
-      place: { name: "悉尼机场 SYD", lat: -33.9399, lng: 151.1753 },
-      lines: [
-        "航司 / 航班号：待补充",
-        "出发地 / 航站楼：待补充",
-        "行李转盘：待补充"
-      ],
-      phone: "悉尼机场 +61 2 9667 9111"
-    },
-    flightOut: {
-      status: "wait",
-      title: "回程机票",
-      when: "日期时间待补充",
-      place: { name: "墨尔本机场 MEL", lat: -37.6690, lng: 144.8410 },
-      lines: ["航司 / 航班号：待补充", "从墨尔本出发，航站楼待补充"],
-      phone: "墨尔本机场 +61 3 9297 1600"
-    },
+    flights: [
+      {
+        status: "ok",
+        title: "去程 · 国泰 CX181",
+        when: "9/29 00:45 香港 T1 → 11:45 悉尼 T1（当地时间）",
+        place: { name: "香港国际机场 HKG T1", lat: 22.3080, lng: 113.9185 },
+        place2: { name: "悉尼机场 SYD T1", lat: -33.9399, lng: 151.1753 },
+        lines: [
+          "经济舱 · 有餐食 · 波音 777 · 飞行 9h",
+          "携程订单 1128148549424544"
+        ],
+        phone: "国泰 +852 2747 1888 · 悉尼机场 +61 2 9667 9111"
+      },
+      {
+        status: "ok",
+        title: "墨尔本 → 悉尼 · 捷星 JQ530",
+        when: "10/6 20:15 墨尔本 T4 → 21:40 悉尼 T2",
+        place: { name: "墨尔本机场 MEL T4", lat: -37.6690, lng: 144.8410 },
+        place2: { name: "悉尼机场 SYD T2", lat: -33.9331, lng: 151.1770 },
+        lines: [
+          "经济舱 · 空客 320 · 无餐食 · 飞行 1h25",
+          "携程订单 1128149859481952",
+          "当天 10:00 已还车，去机场用火车/网约车"
+        ],
+        phone: "Jetstar 131 538 · 墨尔本机场 +61 3 9297 1600"
+      },
+      {
+        status: "ok",
+        title: "返程 · 悉尼 → 香港",
+        when: "10/7 11:10 悉尼 → 17:45 香港（当地时间）",
+        place: { name: "悉尼机场 SYD", lat: -33.9399, lng: 151.1753 },
+        place2: { name: "香港国际机场 HKG", lat: 22.3080, lng: 113.9185 },
+        lines: [
+          "航班号截图未展开，与 CX181 同一订单",
+          "携程订单 1128148549424544"
+        ],
+        phone: "悉尼机场 +61 2 9667 9111"
+      }
+    ],
     car: {
-      status: "wait",
-      title: "租车",
-      when: "10/1 悉尼取车 → 行程结束后墨尔本还车",
-      place: { name: "悉尼机场租车中心", lat: -33.9330, lng: 151.1805 },
+      status: "ok",
+      title: "租车 · 悉尼市区取 / 墨尔本市区还",
+      when: "10/1 周四 10:00 取车 → 10/6 周二 10:00 还车",
+      pickup: { name: "Sydney Downtown, 65 William Street, Sydney NSW 2010", lat: -33.8758, lng: 151.2129 },
+      dropoff: { name: "Melbourne Downtown - Franklin Street, Shop 3/8 Franklin Street, Melbourne VIC 3000", lat: -37.8110, lng: 144.9605 },
       lines: [
-        "公司 / 确认号：待补充",
-        "取车：2026-10-01 早（D3 建议 08:00 上路，选机场或市区 7 点能取的店）",
-        "还车：墨尔本（酒店或 MEL 机场，待补充）",
-        "需要国际驾照或公证翻译件"
+        "取车电话 +61 2 9329 9590",
+        "还车电话 +61 3 9659 8890",
+        "门店营业：周一至周五 07:30–17:00，周末 08:00–16:00",
+        "10/1、10/6 都是工作日，10:00 在营业时间内",
+        "10/6 酒店退房也常是 10:00，先把行李放车上，还车后再去机场"
       ],
-      phone: "租车公司电话待补充"
+      phone: "取 +61 2 9329 9590 · 还 +61 3 9659 8890"
     },
     hotels: [
       { nights: "D1–D2", date: "9/29、9/30 两晚", area: "悉尼", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -33.8688, lng: 151.2093 },
-      { nights: "D3", date: "10/1 一晚", area: "Jervis Bay 小镇或附近", name: "酒店名待补充", address: "Huskisson / Vincentia 一带", phone: "电话待补充", lat: -35.0417, lng: 150.6744 },
+      { nights: "D3", date: "10/1 一晚", area: "Jervis Bay", name: "酒店名待补充", address: "Huskisson / Vincentia 一带", phone: "电话待补充", lat: -35.0417, lng: 150.6744 },
       { nights: "D4", date: "10/2 一晚", area: "Narooma", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -36.2190, lng: 150.1310 },
       { nights: "D5", date: "10/3 一晚", area: "Lakes Entrance", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -37.8810, lng: 147.9940 },
-      { nights: "D6", date: "10/4 一晚", area: "吉朗 / 大洋路起点", name: "酒店名待补充", address: "Geelong 或 Torquay，待补充", phone: "电话待补充", lat: -38.1499, lng: 144.3617 },
-      { nights: "D7", date: "10/5 一晚", area: "墨尔本", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -37.8136, lng: 144.9631 }
+      { nights: "D6–D7", date: "10/4、10/5 两晚", area: "墨尔本市区", name: "酒店名待补充", address: "稍后补店名地址电话", phone: "电话待补充", lat: -37.8136, lng: 144.9631 },
+      { nights: "D8", date: "10/6 一晚", area: "悉尼", name: "酒店名待补充", address: "JQ530 21:40 到 T2，第二天 11:10 出国", phone: "电话待补充", lat: -33.8688, lng: 151.2093 }
     ]
   };
 
   const TODOS = [
     { group: "证件与钱" },
     "护照有效期超过回国后 6 个月；澳大利亚 ETA 电子签证已批",
-    "国际驾照或驾照公证翻译，取车要用",
+    "国际驾照或驾照公证翻译，10/1 10:00 取车要用",
     "旅行保险（含租车自驾和医疗）",
     "通知银行将有澳大利亚消费；准备一张 Visa/Mastercard",
     { group: "必须先订" },
-    "回程机票（去程目前只写了 9/29 11:45 抵达悉尼）",
-    "租车：10/1 悉尼取、墨尔本还，自动挡，确认里程无上限",
-    "酒店 7 晚：悉尼×2、Jervis Bay×1、Narooma×1、Lakes Entrance×1、吉朗/大洋路起点×1、墨尔本×1",
+    "酒店：悉尼×2（D1–D2）、Jervis Bay×1、Narooma×1、Lakes Entrance×1、墨尔本市区×2（D6–D7）、悉尼×1（D8，10/6 晚）",
     "菲利普岛企鹅归巢（Penguin Parade）——要看就必须网上提前买，现场经常售罄",
     { group: "可选但容易忘" },
     "歌剧院内部场馆参观 / 海港大桥 BridgeClimb（本行程按外观景，不订也能走）",
@@ -323,8 +373,10 @@ svg a { cursor: pointer; }
     "把本页添加到手机主屏幕，并下载离线地图：悉尼、NSW 南海岸、Gippsland、墨尔本、大洋路",
     "Type I 澳标转换插头、防晒、防风外套（10 月海边风大，15–22°C）",
     "10/4 周日澳洲夏令时拨快 1 小时，D6 早上按新时间出发",
-    "D7 大洋路约 11 小时，前一晚早睡，6:00 必须上路",
-    "把填好的机票/酒店/租车信息写进本页 BOOKINGS 后再出发"
+    "D3 取车是 10:00 市区，不要按机场 8 点取车来排",
+    "D7 大洋路从墨尔本市区出发，比吉朗更远，6:00 必须上路",
+    "10/6 10:00 墨尔本 Franklin St 还车；当晚 JQ530 20:15 MEL T4",
+    "10/7 11:10 悉尼飞香港，T2 过夜后注意航站楼"
   ];
 
   const DAYS = [
@@ -333,7 +385,7 @@ svg a { cursor: pointer; }
       stay: "悉尼", color: "#c45c26", mode: "walking",
       drive: "景点之间步行约 30min，不含游览",
       items: [
-        { time: "11:45", name: "抵达悉尼机场", lat: -33.9399, lng: 151.1753, note: "放行李/入市区，预留到 13:30", mode: "driving", skipNav: true },
+        { time: "11:45", name: "抵达悉尼机场 T1", lat: -33.9399, lng: 151.1753, note: "国泰 CX181，香港 00:45 起飞。放行李/入市区，预留到 13:30", mode: "driving", skipNav: true },
         { time: "13:30", name: "圣玛丽大教堂", lat: -33.8712, lng: 151.2131, note: "St Mary's Cathedral" },
         { time: "14:00", name: "海德公园", lat: -33.8731, lng: 151.2114, note: "Hyde Park，和大教堂挨着" },
         { time: "14:40", name: "皇家植物园", lat: -33.8642, lng: 151.2166, note: "Royal Botanic Garden，可一路走到码头" },
@@ -360,16 +412,16 @@ svg a { cursor: pointer; }
     {
       id: "d3", date: "2026-10-01", wd: "周四", title: "南下 Jervis Bay", area: "卧龙岗 → Kiama → Gerringong → Jervis Bay",
       stay: "Jervis Bay", color: "#3d7a32", mode: "driving",
-      drive: "开车约 3h，不含取车和游览。已按北→南重排",
+      drive: "开车约 3h，不含取车和游览。10:00 市区取车，已按北→南重排",
       items: [
-        { time: "08:00", name: "悉尼取车出发", lat: -33.9330, lng: 151.1805, note: "取车公司待补充" },
-        { time: "09:15", name: "Bald Hill Lookout", lat: -34.2208, lng: 150.9783, note: "Stanwell Park，俯拍海崖大桥" },
-        { time: "09:45", name: "海崖大桥 Sea Cliff Bridge", lat: -34.2565, lng: 150.9715, note: "可停车走上人行道" },
-        { time: "11:00", name: "Minnamurra Lookout / 心形沙滩", lat: -34.6278, lng: 150.8622, note: "Minnamurra Point，俯看 Jones Beach" },
-        { time: "11:40", name: "基亚马灯塔 Kiama Lighthouse", lat: -34.6719, lng: 150.8625, note: "原表写还可往 lighthouse 方向走；吹孔 Blowhole 就在旁边" },
-        { time: "12:30", name: "Gerringong 观鲸台", lat: -34.7463, lng: 150.8328, note: "Tasman Dr / Belinda St。10 月仍是南迁季，不保证看得到。咨询 1300 654 262" },
-        { time: "15:00", name: "Hyams Beach", lat: -35.1017, lng: 150.6931, optional: true, note: "可跳过。白砂很有名，停车位少，周末易满" },
-        { time: "17:30", name: "住宿 · Jervis Bay", lat: -35.0417, lng: 150.6744, stay: true, note: "Huskisson / Vincentia 一带，酒店待补充" }
+        { time: "10:00", name: "悉尼市区取车", lat: -33.8758, lng: 151.2129, note: "65 William Street，电话 +61 2 9329 9590。门店 07:30 开门" },
+        { time: "11:00", name: "Bald Hill Lookout", lat: -34.2208, lng: 150.9783, note: "Stanwell Park，俯拍海崖大桥" },
+        { time: "11:25", name: "海崖大桥 Sea Cliff Bridge", lat: -34.2565, lng: 150.9715, note: "可停车走上人行道" },
+        { time: "12:40", name: "Minnamurra Lookout / 心形沙滩", lat: -34.6278, lng: 150.8622, note: "Minnamurra Point，俯看 Jones Beach" },
+        { time: "13:15", name: "基亚马灯塔 Kiama Lighthouse", lat: -34.6719, lng: 150.8625, note: "吹孔 Blowhole 就在旁边" },
+        { time: "14:00", name: "Gerringong 观鲸台", lat: -34.7463, lng: 150.8328, note: "Tasman Dr / Belinda St。10 月仍是南迁季，不保证看得到。咨询 1300 654 262" },
+        { time: "16:00", name: "Hyams Beach", lat: -35.1017, lng: 150.6931, optional: true, note: "可跳过。白砂很有名，停车位少，周末易满" },
+        { time: "18:00", name: "住宿 · Jervis Bay", lat: -35.0417, lng: 150.6744, stay: true, note: "Huskisson / Vincentia 一带，酒店待补充" }
       ]
     },
     {
@@ -404,32 +456,43 @@ svg a { cursor: pointer; }
       ]
     },
     {
-      id: "d6", date: "2026-10-04", wd: "周日", title: "菲利普岛", area: "Lakes Entrance → Tarra-Bulga → 菲利普岛 → 吉朗",
-      stay: "吉朗 / 大洋路起点", color: "#b03a4a", mode: "driving",
-      drive: "开车约 6h。今日夏令时拨快 1 小时。Yarra Ranges / Warrandyte 和菲利普岛不顺路，列为备选",
+      id: "d6", date: "2026-10-04", wd: "周日", title: "菲利普岛", area: "Lakes Entrance → Tarra-Bulga → 菲利普岛 → 墨尔本市区",
+      stay: "墨尔本市区", color: "#b03a4a", mode: "driving",
+      drive: "开车约 6.5h。今日夏令时拨快 1 小时。当晚住墨尔本市区，酒店稍后补",
       items: [
         { time: "08:00", name: "Lakes Entrance 出发", lat: -37.8810, lng: 147.9940, note: "夏令时已开始，按新时间出门" },
         { time: "10:30", name: "Tarra-Bulga National Park", lat: -38.4470, lng: 146.5580, note: "Balook 雨林，Corra Boardwalk / 蕨树。顺路；另外两个公园见备选" },
         { time: "14:00", name: "菲利普岛 The Nobbies", lat: -38.5180, lng: 145.1220, note: "海蚀崖和木栈道" },
-        { time: "17:30", name: "企鹅归巢 Penguin Parade", lat: -38.5125, lng: 145.1478, optional: true, book: "必须提前在 philipisland.com.au 买票", note: "黄昏开始。看完再赶吉朗会很晚，可改住 Cowes，或放弃企鹅直奔吉朗" },
+        { time: "17:30", name: "企鹅归巢 Penguin Parade", lat: -38.5125, lng: 145.1478, optional: true, book: "必须提前在 philipisland.com.au 买票", note: "黄昏开始。看完回墨尔本市区约 1.5–2h，大约 22:00 到；不看企鹅可下午进城" },
         { time: "备选", name: "Yarra Ranges National Park", lat: -37.7800, lng: 145.8000, optional: true, skipNav: true, note: "墨尔本东北，和今天路线相反" },
         { time: "备选", name: "Warrandyte State Park", lat: -37.7460, lng: 145.2220, optional: true, skipNav: true, note: "墨尔本外东北，不顺路" },
-        { time: "20:30", name: "住宿 · 吉朗（大洋路起点）", lat: -38.1499, lng: 144.3617, stay: true, note: "原表问「吉朗？」——住这里 D7 最顺。酒店待补充" }
+        { time: "21:00", name: "住宿 · 墨尔本市区", lat: -37.8136, lng: 144.9631, stay: true, note: "酒店待补充。D6、D7 连住两晚" }
       ]
     },
     {
-      id: "d7", date: "2026-10-05", wd: "周一", title: "环大洋路", area: "吉朗 → 十二门徒 → 阿波罗湾 → 墨尔本",
-      stay: "墨尔本", color: "#1f5a7a", mode: "driving",
-      drive: "开车约 11h，必须 6:00 出发。按原表西端景点先走、再沿海岸折返",
+      id: "d7", date: "2026-10-05", wd: "周一", title: "环大洋路", area: "墨尔本 → 十二门徒 → 阿波罗湾 → 墨尔本",
+      stay: "墨尔本市区", color: "#1f5a7a", mode: "driving",
+      drive: "从市区出发约 12h，必须 6:00 出门。按原表西端景点先走、再沿海岸折返",
       items: [
-        { time: "06:00", name: "吉朗出发", lat: -38.1499, lng: 144.3617, note: "先走内陆去门徒，再沿大洋路往回开，少走回头路" },
+        { time: "06:00", name: "墨尔本市区出发", lat: -37.8136, lng: 144.9631, note: "先走内陆去门徒，再沿大洋路往回开，少走回头路" },
         { time: "09:00", name: "十二门徒 Twelve Apostles", lat: -38.6618, lng: 143.1052, note: "免费。停车易满。咨询 Parks Victoria 13 19 63" },
         { time: "09:50", name: "洛克大峡谷 Loch Ard Gorge", lat: -38.6470, lng: 143.0715 },
         { time: "10:30", name: "伦敦桥 London Arch", lat: -38.6217, lng: 142.9903, note: "地图里仍常写 London Bridge, Port Campbell" },
         { time: "11:00", name: "岩穴 The Grotto", lat: -38.6142, lng: 142.9950 },
         { time: "13:00", name: "阿波罗湾 Apollo Bay", lat: -38.7554, lng: 143.6694, note: "午餐补给" },
         { time: "13:40", name: "Marriner's Lookout", lat: -38.7475, lng: 143.6810, note: "阿波罗湾上方，看整段海湾" },
-        { time: "18:30", name: "住宿 · 墨尔本", lat: -37.8136, lng: 144.9631, stay: true, note: "酒店待补充。回程航班未写，按住一晚计" }
+        { time: "19:00", name: "住宿 · 墨尔本市区", lat: -37.8136, lng: 144.9631, stay: true, note: "同一家酒店。次日 10:00 还车，今晚早睡" }
+      ]
+    },
+    {
+      id: "d8", date: "2026-10-06", wd: "周二", title: "还车返悉尼", area: "墨尔本市区 → 机场 → 悉尼",
+      stay: "悉尼", color: "#5c4a3a", mode: "transit", overview: false,
+      drive: "10:00 还车，晚上飞机。不要再排长途自驾",
+      items: [
+        { time: "10:00", name: "墨尔本还车", lat: -37.8110, lng: 144.9605, note: "Shop 3/8 Franklin Street，电话 +61 3 9659 8890。退房也常是 10:00，行李先放车上" },
+        { time: "20:15", name: "捷星 JQ530 起飞", lat: -37.6690, lng: 144.8410, note: "MEL T4，经济舱无餐食。提前 2 小时到机场", mode: "driving" },
+        { time: "21:40", name: "抵达悉尼机场 T2", lat: -33.9331, lng: 151.1770, note: "入市区过夜，酒店待补充" },
+        { time: "住", name: "住宿 · 悉尼", lat: -33.8688, lng: 151.2093, stay: true, skipNav: true, note: "次日 11:10 飞香港，不要住太远" }
       ]
     }
   ];
@@ -448,11 +511,17 @@ svg a { cursor: pointer; }
     [-38.30, 144.70]
   ];
 
-  function zonedDate(isoLocal) {
+  const LAND = COAST.concat([
+    [-38.55, 142.80], [-37.20, 143.20], [-36.20, 144.20], [-35.00, 146.20],
+    [-33.70, 148.40], [-33.40, 150.20], [-33.40, 151.30]
+  ]);
+
+  function zonedDate(isoLocal, timeZone) {
+    timeZone = timeZone || TZ;
     const utcGuess = new Date(isoLocal + "Z");
     const offsetOf = (ms) => {
       const parts = new Intl.DateTimeFormat("en-US", {
-        timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit",
+        timeZone: timeZone, year: "numeric", month: "2-digit", day: "2-digit",
         hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"
       }).formatToParts(new Date(ms));
       const g = Object.fromEntries(parts.filter(p => p.type !== "literal").map(p => [p.type, p.value]));
@@ -523,25 +592,29 @@ svg a { cursor: pointer; }
       '<text x="' + (left ? -10 : 10) + '" y="4" font-size="9" font-weight="700" fill="#241c14" text-anchor="' + (left ? "end" : "start") + '">' + esc(label) + "</text></g>";
   }
 
+  function mapEmbed(lat, lng, z) {
+    return "https://maps.google.com/maps?q=" + lat + "," + lng + "&z=" + (z || 12) + "&hl=zh-CN&output=embed";
+  }
+
   function renderOverview() {
-    const routes = DAYS.map(day => wobblePath(day.items.filter(i => i.lat && !i.optional).map(i => [i.lat, i.lng])));
+    const driveDays = DAYS.filter(d => d.overview !== false);
+    const routes = driveDays.map(day => wobblePath(day.items.filter(i => i.lat && !i.optional).map(i => [i.lat, i.lng])));
+    const land = wobblePath(LAND) + " Z";
     let svg = '<svg viewBox="0 0 ' + W + " " + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="行程总览地图">' +
-      '<rect width="' + W + '" height="' + H + '" fill="#f7f0e2"/>' +
-      '<path d="' + wobblePath(COAST) + '" fill="none" stroke="#8aa4b8" stroke-width="7" stroke-linecap="round" opacity=".35"/>' +
-      '<path d="' + wobblePath(COAST) + '" fill="none" stroke="#2a2218" stroke-width="1.7" stroke-linecap="round"/>' +
-      '<path d="' + wobblePath(BAY) + '" fill="none" stroke="#2a2218" stroke-width="1.2" stroke-dasharray="3 3" opacity=".7"/>';
-    DAYS.forEach((day, i) => {
+      '<rect width="' + W + '" height="' + H + '" fill="#c5dbe8"/>' +
+      '<path d="' + land + '" fill="#ead9b4" stroke="#2a2218" stroke-width="1.6" stroke-linejoin="round"/>' +
+      '<path d="' + wobblePath(BAY) + '" fill="#c5dbe8" stroke="#2a2218" stroke-width="1.1"/>';
+    driveDays.forEach((day, i) => {
       svg += '<path d="' + routes[i] + '" fill="none" stroke="' + day.color + '" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>';
     });
-    svg += '<text x="300" y="28" font-size="11" fill="#6e6256">Tasman Sea</text>';
-    svg += '<text x="40" y="628" font-size="11" fill="#6e6256">Bass Strait</text>';
-    svg += houseMark(-33.8688, 151.2093, "D1–D2 悉尼", "#c45c26");
+    svg += '<text x="292" y="30" font-size="11" fill="#3f5a6a">Tasman Sea</text>';
+    svg += '<text x="36" y="628" font-size="11" fill="#3f5a6a">Bass Strait</text>';
+    svg += houseMark(-33.8688, 151.2093, "D1–D2·D8 悉尼", "#c45c26");
     svg += houseMark(-35.0417, 150.6744, "D3 Jervis", "#3d7a32");
     svg += houseMark(-36.2190, 150.1310, "D4 Narooma", "#c4921a");
     svg += houseMark(-37.8810, 147.9940, "D5 Lakes", "#6b4c9a");
-    svg += houseMark(-38.1499, 144.3617, "D6 吉朗", "#b03a4a");
-    svg += houseMark(-37.8136, 144.9631, "D7 墨尔本", "#1f5a7a");
-    DAYS.forEach(day => {
+    svg += houseMark(-37.8136, 144.9631, "D6–D7 墨尔本", "#1f5a7a");
+    driveDays.forEach(day => {
       day.items.filter(i => i.lat && !i.stay && !i.optional).forEach(i => {
         const [x, y] = xy(i.lat, i.lng);
         svg += '<a href="' + navHref(i.lat, i.lng, i.mode || day.mode) + '" target="_blank" rel="noopener">' +
@@ -551,9 +624,31 @@ svg a { cursor: pointer; }
     });
     svg += "</svg>";
     document.getElementById("overview").innerHTML = svg;
-    document.getElementById("legend").innerHTML = DAYS.map(d =>
+    document.getElementById("legend").innerHTML = driveDays.map(d =>
       "<span><i style=\"background:" + d.color + "\"></i>" + d.id.toUpperCase() + " " + d.title + "</span>"
     ).join("");
+
+    const stays = [
+      { label: "D1–D2 悉尼", sub: "9/29–9/30", lat: -33.8688, lng: 151.2093 },
+      { label: "D3 Jervis Bay", sub: "10/1", lat: -35.0417, lng: 150.6744 },
+      { label: "D4 Narooma", sub: "10/2", lat: -36.2190, lng: 150.1310 },
+      { label: "D5 Lakes Entrance", sub: "10/3", lat: -37.8810, lng: 147.9940 },
+      { label: "D6–D7 墨尔本市区", sub: "10/4–10/5", lat: -37.8136, lng: 144.9631 },
+      { label: "D8 悉尼", sub: "10/6 过夜", lat: -33.8688, lng: 151.2093 }
+    ];
+    document.getElementById("stay-grid").innerHTML = stays.map(s =>
+      '<a class="stay-card" target="_blank" rel="noopener" href="' + navHref(s.lat, s.lng, "driving") + '">' +
+      '<iframe title="' + esc(s.label) + '" loading="lazy" src="' + mapEmbed(s.lat, s.lng, 12) + '"></iframe>' +
+      "<p>" + esc(s.label) + "<span>" + esc(s.sub) + "</span></p></a>"
+    ).join("");
+
+    const tripPath = stays.filter((s, i) => i < 5).map(s => s.lat + "," + s.lng).join("/");
+    document.getElementById("trip-map").src = "https://maps.google.com/maps?saddr=" + stays[0].lat + "," + stays[0].lng +
+      "&daddr=" + stays[4].lat + "," + stays[4].lng + "&hl=zh-CN&output=embed";
+    document.getElementById("map-actions").innerHTML =
+      '<a class="btn primary" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/' + tripPath + '">打开整趟住宿导航</a>' +
+      '<a class="btn" target="_blank" rel="noopener" href="' + navHref(-33.8758, 151.2129) + '">取车门店</a>' +
+      '<a class="btn" target="_blank" rel="noopener" href="' + navHref(-37.8110, 144.9605) + '">还车门店</a>';
   }
 
   function dayMini(day) {
@@ -584,6 +679,17 @@ svg a { cursor: pointer; }
     return s + "</svg>";
   }
 
+  function dayEmbed(day) {
+    const pts = day.items.filter(i => i.lat && !i.optional && !i.skipNav);
+    if (!pts.length) {
+      const p = day.items.find(i => i.lat) || { lat: -33.87, lng: 151.21 };
+      return mapEmbed(p.lat, p.lng, 11);
+    }
+    if (pts.length === 1) return mapEmbed(pts[0].lat, pts[0].lng, 11);
+    const a = pts[0], b = pts[pts.length - 1];
+    return "https://maps.google.com/maps?saddr=" + a.lat + "," + a.lng + "&daddr=" + b.lat + "," + b.lng + "&hl=zh-CN&output=embed";
+  }
+
   function renderDays() {
     document.getElementById("day-list").innerHTML = DAYS.map(day => {
       const navStops = day.items.filter(i => i.lat && !i.optional && !i.skipNav);
@@ -604,7 +710,9 @@ svg a { cursor: pointer; }
         '<button class="btn" type="button" data-toggle="' + day.id + '">当日路线图</button>' +
         '<a class="btn primary" target="_blank" rel="noopener" href="' + multiHref(navStops, day.mode) + '">一键全天导航</a>' +
         "</div>" +
-        '<div class="day-map">' + dayMini(day) + '<p class="map-tip">编号按建议顺序。可跳过的点不进全天导航。</p></div>' +
+        '<div class="day-map">' + dayMini(day) +
+        '<div class="live-map" style="height:200px;margin-top:8px"><iframe title="' + esc(day.title) + '地图" loading="lazy" data-src="' + dayEmbed(day) + '"></iframe></div>' +
+        '<p class="map-tip">上图谷歌地图，示意编号按建议顺序。可跳过的点不进全天导航。</p></div>' +
         '<ul class="tl">' + items + "</ul></article>";
     }).join("");
   }
@@ -614,7 +722,8 @@ svg a { cursor: pointer; }
     const block = (item) =>
       '<div class="book"><span class="tag ' + item.status + '">' + (item.status === "ok" ? "已确认" : "待补充") + "</span>" +
       "<h3>" + esc(item.title) + "</h3><p>" + esc(item.when) + "</p>" +
-      "<p>" + placeLink(item.place) + "</p>" +
+      (item.place ? "<p>" + placeLink(item.place) + (item.place2 ? " → " + placeLink(item.place2) : "") + "</p>" : "") +
+      (item.pickup ? "<p>取车 " + placeLink(item.pickup) + "</p><p>还车 " + placeLink(item.dropoff) + "</p>" : "") +
       item.lines.map(l => "<p>" + esc(l) + "</p>").join("") +
       '<p class="meta">电话 ' + esc(item.phone) + "</p></div>";
     const hotels = b.hotels.map(h =>
@@ -623,8 +732,8 @@ svg a { cursor: pointer; }
       "<p>" + placeLink({ name: h.area, lat: h.lat, lng: h.lng }) + " · " + esc(h.address) + "</p>" +
       '<p class="meta">电话 ' + esc(h.phone) + " · 澳洲酒店常见入住 15:00 / 退房 10:00</p></div>"
     ).join("");
-    document.getElementById("bookings").innerHTML = block(b.flightIn) + block(b.flightOut) + block(b.car) +
-      "<p class=\"meta\" style=\"margin:12px 0 0\">酒店（7 晚）</p>" + hotels;
+    document.getElementById("bookings").innerHTML = b.flights.map(block).join("") + block(b.car) +
+      "<p class=\"meta\" style=\"margin:12px 0 0\">酒店（8 晚，店名都还没到）</p>" + hotels;
   }
 
   function renderTodos() {
@@ -638,17 +747,25 @@ svg a { cursor: pointer; }
     DAYS.forEach(day => {
       day.items.forEach(it => {
         const when = itemWhen(day, it);
-        if (when) list.push({ when, title: it.name, day: day.id.toUpperCase(), date: day.date, time: it.time, lat: it.lat, lng: it.lng, mode: it.mode || day.mode });
+        if (when) list.push({ when, title: it.name, day: day.id.toUpperCase(), date: day.date, time: it.time, lat: it.lat, lng: it.lng, mode: it.mode || day.mode, tz: TZ });
       });
+    });
+    list.push({
+      when: zonedDate("2026-09-29T00:45:00", "Asia/Hong_Kong"),
+      title: "国泰 CX181 香港起飞", day: "去程", lat: 22.3080, lng: 113.9185, mode: "driving", tz: "Asia/Hong_Kong", tzNote: "香港时间"
+    });
+    list.push({
+      when: zonedDate("2026-10-07T11:10:00"),
+      title: "返程悉尼起飞（香港 17:45 到）", day: "返程", lat: -33.9399, lng: 151.1753, mode: "driving", tz: TZ
     });
     return list.sort((a, b) => a.when - b.when);
   }
 
   const EVENTS = events();
 
-  function fmtWhen(d) {
+  function fmtWhen(d, tz) {
     return new Intl.DateTimeFormat("zh-CN", {
-      timeZone: TZ, month: "numeric", day: "numeric", weekday: "short",
+      timeZone: tz || TZ, month: "numeric", day: "numeric", weekday: "short",
       hour: "2-digit", minute: "2-digit", hourCycle: "h23"
     }).format(d);
   }
@@ -674,7 +791,7 @@ svg a { cursor: pointer; }
     }
     label.textContent = "下一站";
     title.innerHTML = '<a class="place" style="color:#f7efe3" target="_blank" rel="noopener" href="' + navHref(next.lat, next.lng, next.mode) + '">' + esc(next.day + " · " + next.title) + "</a>";
-    whenEl.textContent = fmtWhen(next.when);
+    whenEl.textContent = fmtWhen(next.when, next.tz) + (next.tzNote ? "（" + next.tzNote + "）" : "");
     let diff = Math.max(0, next.when - now);
     const days = Math.floor(diff / 86400000); diff %= 86400000;
     const hours = Math.floor(diff / 3600000); diff %= 3600000;
@@ -690,7 +807,13 @@ svg a { cursor: pointer; }
     if (!t) return;
     if (t.tagName === "A") return;
     const art = document.getElementById(t.getAttribute("data-toggle"));
-    if (art) art.classList.toggle("open");
+    if (!art) return;
+    art.classList.toggle("open");
+    if (art.classList.contains("open")) {
+      art.querySelectorAll("iframe[data-src]").forEach(function (f) {
+        if (!f.getAttribute("src")) f.src = f.getAttribute("data-src");
+      });
+    }
   });
 
   const navLinks = document.querySelectorAll(".nav a");
