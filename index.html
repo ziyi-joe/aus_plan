@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="澳东7日">
+<meta name="theme-color" content="#c45c26">
+<title>澳东海岸 7日 · 悉尼→墨尔本</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' font-size='52'%3E🇦🇺%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --paper: #f1e6d0;
+  --ink: #241c14;
+  --muted: #6e6256;
+  --card: #fffaf1;
+  --line: #d7cbb6;
+  --accent: #c45c26;
+  --good: #2f6f4e;
+  --warn: #9a3b2f;
+  --nav-h: 56px;
+  --d1: #c45c26; --d2: #1f7a6c; --d3: #3d7a32; --d4: #c4921a;
+  --d5: #6b4c9a; --d6: #b03a4a; --d7: #1f5a7a;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(196,92,38,.08), transparent 28%),
+    radial-gradient(circle at 90% 40%, rgba(31,90,122,.07), transparent 26%),
+    repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(36,28,20,.035) 28px),
+    var(--paper);
+  line-height: 1.45;
+  padding: 12px 12px calc(var(--nav-h) + 18px + env(safe-area-inset-bottom));
+}
+a { color: inherit; }
+button { font-family: inherit; }
+.wrap { max-width: 720px; margin: 0 auto; }
+.kicker {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 6px 4px 10px;
+}
+.kicker h1 { font-size: 1.35rem; margin: 0; letter-spacing: .02em; }
+.kicker small { color: var(--muted); font-size: .78rem; }
+.card {
+  background: var(--card);
+  border: 1.5px solid #2a2218;
+  border-radius: 18px 24px 16px 22px;
+  box-shadow: 3px 4px 0 rgba(36,28,20,.14);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.card h2 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.card h2 .num {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--ink); display: inline-flex;
+  align-items: center; justify-content: center;
+  font-size: .72rem; font-weight: 700;
+}
+#now-card {
+  background: linear-gradient(160deg, #2a2218 0%, #3d3226 55%, #5a3a24 100%);
+  color: #f7efe3; border-color: #1a140e;
+}
+#now-card h2 { margin-bottom: 8px; color: #f0d2b0; font-weight: 600; font-size: .82rem; letter-spacing: .12em; }
+.now-label { font-size: .8rem; color: #d9c4aa; margin-bottom: 4px; }
+.now-title { font-size: 1.35rem; font-weight: 800; margin: 0 0 4px; }
+.now-when { font-size: .92rem; color: #f0d2b0; margin-bottom: 12px; }
+.clock { font-size: .75rem; color: #cbb79a; margin-bottom: 10px; }
+.count {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.count div {
+  background: rgba(255,250,241,.08);
+  border: 1px solid rgba(240,210,176,.25);
+  border-radius: 12px; text-align: center; padding: 10px 0 8px;
+}
+.count em {
+  display: block; font-style: normal; font-size: 1.7rem;
+  font-variant-numeric: tabular-nums; font-weight: 800; line-height: 1.1;
+}
+.count span { font-size: .7rem; color: #d9c4aa; }
+.legend {
+  display: flex; flex-wrap: wrap; gap: 8px 12px;
+  font-size: .75rem; color: var(--muted); margin: 8px 0 0;
+}
+.legend i {
+  display: inline-block; width: 18px; height: 4px; border-radius: 2px;
+  margin-right: 4px; vertical-align: middle;
+}
+.map-box { overflow: hidden; margin: 0 -4px; }
+.map-box svg { width: 100%; height: auto; display: block; }
+.map-tip { font-size: .75rem; color: var(--muted); margin-top: 8px; }
+.book {
+  border-bottom: 1px dashed var(--line); padding: 12px 0;
+}
+.book:last-child { border-bottom: 0; padding-bottom: 0; }
+.book .tag {
+  display: inline-block; font-size: .68rem; font-weight: 700;
+  letter-spacing: .06em; padding: 2px 7px; border-radius: 999px;
+  border: 1px solid currentColor; margin-bottom: 6px;
+}
+.tag.wait { color: var(--warn); }
+.tag.ok { color: var(--good); }
+.book h3 { margin: 0 0 6px; font-size: .98rem; }
+.book p, .meta { margin: 0 0 4px; font-size: .88rem; color: #3f352b; }
+.meta { color: var(--muted); }
+.place {
+  color: #1f4f7a; text-decoration: underline; text-decoration-style: wavy;
+  text-underline-offset: 3px; font-weight: 650;
+}
+.day {
+  border: 1.5px solid #2a2218;
+  border-radius: 16px 20px 14px 18px;
+  overflow: hidden; margin-bottom: 12px;
+  background: #fffaf1;
+  box-shadow: 2px 3px 0 rgba(36,28,20,.1);
+}
+.day-hd {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 8px; padding: 12px 12px 10px; color: #fffaf1; cursor: pointer;
+}
+.day-hd h3 { margin: 0 0 2px; font-size: 1rem; }
+.day-hd p { margin: 0; font-size: .75rem; opacity: .9; }
+.day-hd .stay { font-size: .75rem; background: rgba(255,250,241,.16); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.day-actions { display: flex; gap: 8px; padding: 8px 12px; background: rgba(36,28,20,.03); border-bottom: 1px dashed var(--line); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 40px; padding: 0 12px; border-radius: 999px;
+  border: 1.5px solid #2a2218; background: #fff; font-size: .8rem; font-weight: 700;
+  text-decoration: none; color: var(--ink); cursor: pointer;
+}
+.btn.primary { background: #2a2218; color: #fffaf1; }
+.day-map { display: none; padding: 8px 10px 4px; }
+.day.open .day-map { display: block; }
+.tl { list-style: none; margin: 0; padding: 6px 12px 12px; }
+.tl li {
+  display: grid; grid-template-columns: 52px 14px 1fr; gap: 8px;
+  padding: 10px 0; position: relative;
+}
+.tl li:before {
+  content: ""; position: absolute; left: 58px; top: 0; bottom: 0; width: 2px;
+  background: var(--line);
+}
+.tl li:first-child:before { top: 22px; }
+.tl li:last-child:before { bottom: calc(100% - 22px); }
+.when { font-size: .78rem; font-weight: 700; color: var(--muted); padding-top: 2px; }
+.dot {
+  width: 10px; height: 10px; border-radius: 50%; background: var(--ink);
+  border: 2px solid #fffaf1; margin-top: 6px; z-index: 1; box-shadow: 0 0 0 1.5px #2a2218;
+}
+.what strong { display: block; font-size: .95rem; }
+.what .note { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+.badge {
+  display: inline-block; font-size: .68rem; font-weight: 700;
+  padding: 1px 6px; border-radius: 6px; margin-left: 4px; vertical-align: 1px;
+}
+.badge.book { background: #f6d7a8; color: #7a4a00; }
+.badge.skip { background: #ece7dc; color: #6e6256; }
+.todos { list-style: none; margin: 0; padding: 0; }
+.todos li {
+  padding: 9px 0 9px 18px; position: relative;
+  border-bottom: 1px dashed var(--line); font-size: .92rem;
+}
+.todos li:last-child { border-bottom: 0; }
+.todos li:before { content: "·"; position: absolute; left: 4px; font-weight: 800; }
+.todos .grp {
+  padding-left: 0; border-bottom: 0; color: var(--muted);
+  font-size: .75rem; font-weight: 700; letter-spacing: .08em; margin-top: 8px;
+}
+.todos .grp:before { content: ""; }
+.foot { font-size: .78rem; color: var(--muted); padding: 8px 4px 20px; }
+.foot ol { padding-left: 18px; }
+.nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  height: calc(var(--nav-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: #fffaf1; border-top: 1.5px solid #2a2218;
+}
+.nav a {
+  text-decoration: none; font-size: .68rem; font-weight: 700;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: var(--muted); gap: 2px;
+}
+.nav a.active { color: var(--accent); }
+.nav a span { font-size: .95rem; }
+.house { pointer-events: none; }
+svg a { cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="kicker">
+    <h1>澳东海岸 7 日</h1>
+    <small>2026.9.29 – 10.5 · 离线可看</small>
+  </header>
+
+  <section id="now">
+    <div class="card" id="now-card">
+      <h2>此刻关注</h2>
+      <div class="clock" id="clock"></div>
+      <div class="now-label" id="now-label">下一站</div>
+      <p class="now-title" id="now-title">读取行程…</p>
+      <p class="now-when" id="now-when"></p>
+      <div class="count" id="count"></div>
+    </div>
+  </section>
+
+  <section id="map" class="card">
+    <h2><span class="num">2</span>整趟路线与住宿</h2>
+    <div class="map-box" id="overview"></div>
+    <div class="legend" id="legend"></div>
+    <p class="map-tip">手绘示意，不按精确比例。房子 = 当晚住宿。点地点可导航。</p>
+  </section>
+
+  <section id="book" class="card">
+    <h2><span class="num">3</span>已确认预订</h2>
+    <div id="bookings"></div>
+  </section>
+
+  <section id="days">
+    <div class="card" style="padding-bottom:8px">
+      <h2><span class="num">4</span>逐日行程</h2>
+      <p class="meta" style="margin-bottom:8px">时间为建议节奏，可按现场改。左边时间，点地点即导航。展开当日可看路线并一键多点导航。</p>
+    </div>
+    <div id="day-list"></div>
+  </section>
+
+  <section id="todo" class="card">
+    <h2><span class="num">5</span>出发前待办</h2>
+    <ul class="todos" id="todos"></ul>
+  </section>
+
+  <footer class="foot">
+    <p><b>你需要亲手做的事（一次写清）</b></p>
+    <ol>
+      <li>用手机浏览器打开本页，点分享 → <b>添加到主屏幕</b>。之后没网也能看（导航仍需网络/地图 App）。</li>
+      <li>把机票、租车、酒店的确认号 / 地址 / 电话，填进本文件中部 <code>BOOKINGS</code> 那几行（用备忘录或电脑改完，重新发给手机）。</li>
+      <li>要让任何人点开就能看：打开 <b>https://app.netlify.com/drop</b>，把 <code>index.html</code> 拖进去，把生成的 <code>*.netlify.app</code> 链接发出去。或把文件上传到 GitHub 公开仓库，在 Settings → Pages 选 main 分支，网址是 <code>https://你的用户名.github.io/仓库名/</code>。</li>
+    </ol>
+  </footer>
+</div>
+
+<nav class="nav">
+  <a href="#now"><span>⏱</span>此刻</a>
+  <a href="#map"><span>🗺</span>地图</a>
+  <a href="#book"><span>🎫</span>预订</a>
+  <a href="#days"><span>📅</span>日程</a>
+  <a href="#todo"><span>✓</span>待办</a>
+</nav>
+
+<script>
+(function () {
+  const TZ = "Australia/Sydney";
+
+  /* ===== 改预订信息只动这里 ===== */
+  const BOOKINGS = {
+    flightIn: {
+      status: "wait",
+      title: "去程机票",
+      when: "2026-09-29 11:45 抵达",
+      place: { name: "悉尼机场 SYD", lat: -33.9399, lng: 151.1753 },
+      lines: [
+        "航司 / 航班号：待补充",
+        "出发地 / 航站楼：待补充",
+        "行李转盘：待补充"
+      ],
+      phone: "悉尼机场 +61 2 9667 9111"
+    },
+    flightOut: {
+      status: "wait",
+      title: "回程机票",
+      when: "日期时间待补充",
+      place: { name: "墨尔本机场 MEL", lat: -37.6690, lng: 144.8410 },
+      lines: ["航司 / 航班号：待补充", "从墨尔本出发，航站楼待补充"],
+      phone: "墨尔本机场 +61 3 9297 1600"
+    },
+    car: {
+      status: "wait",
+      title: "租车",
+      when: "10/1 悉尼取车 → 行程结束后墨尔本还车",
+      place: { name: "悉尼机场租车中心", lat: -33.9330, lng: 151.1805 },
+      lines: [
+        "公司 / 确认号：待补充",
+        "取车：2026-10-01 早（D3 建议 08:00 上路，选机场或市区 7 点能取的店）",
+        "还车：墨尔本（酒店或 MEL 机场，待补充）",
+        "需要国际驾照或公证翻译件"
+      ],
+      phone: "租车公司电话待补充"
+    },
+    hotels: [
+      { nights: "D1–D2", date: "9/29、9/30 两晚", area: "悉尼", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -33.8688, lng: 151.2093 },
+      { nights: "D3", date: "10/1 一晚", area: "Jervis Bay 小镇或附近", name: "酒店名待补充", address: "Huskisson / Vincentia 一带", phone: "电话待补充", lat: -35.0417, lng: 150.6744 },
+      { nights: "D4", date: "10/2 一晚", area: "Narooma", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -36.2190, lng: 150.1310 },
+      { nights: "D5", date: "10/3 一晚", area: "Lakes Entrance", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -37.8810, lng: 147.9940 },
+      { nights: "D6", date: "10/4 一晚", area: "吉朗 / 大洋路起点", name: "酒店名待补充", address: "Geelong 或 Torquay，待补充", phone: "电话待补充", lat: -38.1499, lng: 144.3617 },
+      { nights: "D7", date: "10/5 一晚", area: "墨尔本", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -37.8136, lng: 144.9631 }
+    ]
+  };
+
+  const TODOS = [
+    { group: "证件与钱" },
+    "护照有效期超过回国后 6 个月；澳大利亚 ETA 电子签证已批",
+    "国际驾照或驾照公证翻译，取车要用",
+    "旅行保险（含租车自驾和医疗）",
+    "通知银行将有澳大利亚消费；准备一张 Visa/Mastercard",
+    { group: "必须先订" },
+    "回程机票（去程目前只写了 9/29 11:45 抵达悉尼）",
+    "租车：10/1 悉尼取、墨尔本还，自动挡，确认里程无上限",
+    "酒店 7 晚：悉尼×2、Jervis Bay×1、Narooma×1、Lakes Entrance×1、吉朗/大洋路起点×1、墨尔本×1",
+    "菲利普岛企鹅归巢（Penguin Parade）——要看就必须网上提前买，现场经常售罄",
+    { group: "可选但容易忘" },
+    "歌剧院内部场馆参观 / 海港大桥 BridgeClimb（本行程按外观景，不订也能走）",
+    "Pebbly Beach 在 Murramarang 国家公园，末段沙石路，小车通常可走，赶时间可跳过",
+    { group: "出发当天前" },
+    "把本页添加到手机主屏幕，并下载离线地图：悉尼、NSW 南海岸、Gippsland、墨尔本、大洋路",
+    "Type I 澳标转换插头、防晒、防风外套（10 月海边风大，15–22°C）",
+    "10/4 周日澳洲夏令时拨快 1 小时，D6 早上按新时间出发",
+    "D7 大洋路约 11 小时，前一晚早睡，6:00 必须上路",
+    "把填好的机票/酒店/租车信息写进本页 BOOKINGS 后再出发"
+  ];
+
+  const DAYS = [
+    {
+      id: "d1", date: "2026-09-29", wd: "周二", title: "悉尼市区", area: "悉尼（11:45 抵达）",
+      stay: "悉尼", color: "#c45c26", mode: "walking",
+      drive: "景点之间步行约 30min，不含游览",
+      items: [
+        { time: "11:45", name: "抵达悉尼机场", lat: -33.9399, lng: 151.1753, note: "放行李/入市区，预留到 13:30", mode: "driving", skipNav: true },
+        { time: "13:30", name: "圣玛丽大教堂", lat: -33.8712, lng: 151.2131, note: "St Mary's Cathedral" },
+        { time: "14:00", name: "海德公园", lat: -33.8731, lng: 151.2114, note: "Hyde Park，和大教堂挨着" },
+        { time: "14:40", name: "皇家植物园", lat: -33.8642, lng: 151.2166, note: "Royal Botanic Garden，可一路走到码头" },
+        { time: "16:00", name: "环形码头 Circular Quay", lat: -33.8613, lng: 151.2108 },
+        { time: "16:30", name: "悉尼歌剧院", lat: -33.8568, lng: 151.2153, note: "外观即可。内部参观需提前订", book: "内部参观需提前订" },
+        { time: "17:30", name: "海港大桥", lat: -33.8523, lng: 151.2108, note: "桥下或对岸观景；上桥攀爬需另订 BridgeClimb" },
+        { time: "住", name: "住宿 · 悉尼", lat: -33.8688, lng: 151.2093, stay: true, skipNav: true, note: "酒店名待补充" }
+      ]
+    },
+    {
+      id: "d2", date: "2026-09-30", wd: "周三", title: "东海岸线", area: "悉尼",
+      stay: "悉尼", color: "#1f7a6c", mode: "walking",
+      drive: "去程通勤约 55min · 景点步行约 4h30 · 返程约 1h15",
+      items: [
+        { time: "09:00", name: "出发去邦迪", lat: -33.8915, lng: 151.2767, note: "公交/轻轨约 55min，不是自驾日", mode: "transit", skipNav: true },
+        { time: "10:00", name: "邦迪海滩 Bondi Beach", lat: -33.8915, lng: 151.2767, note: "由此沿海岸步道向南" },
+        { time: "11:00", name: "库吉海滩 Coogee Beach", lat: -33.9209, lng: 151.2555, note: "Bondi–Coogee Walk 经典段" },
+        { time: "12:30", name: "马鲁布拉 Maroubra Beach", lat: -33.9482, lng: 151.2540 },
+        { time: "14:00", name: "拉佩鲁兹 La Perouse", lat: -33.9889, lng: 151.2339, note: "南线终点，看 Botany Bay" },
+        { time: "备选", name: "Long Reef 海岸步道", lat: -33.7394, lng: 151.3125, optional: true, note: "在北岸 Collaroy，和当天南线完全不顺路，二选一即可", skipNav: true },
+        { time: "17:00", name: "返回市区住宿", lat: -33.8688, lng: 151.2093, stay: true, note: "返程约 1h15", mode: "transit" }
+      ]
+    },
+    {
+      id: "d3", date: "2026-10-01", wd: "周四", title: "南下 Jervis Bay", area: "卧龙岗 → Kiama → Gerringong → Jervis Bay",
+      stay: "Jervis Bay", color: "#3d7a32", mode: "driving",
+      drive: "开车约 3h，不含取车和游览。已按北→南重排",
+      items: [
+        { time: "08:00", name: "悉尼取车出发", lat: -33.9330, lng: 151.1805, note: "取车公司待补充" },
+        { time: "09:15", name: "Bald Hill Lookout", lat: -34.2208, lng: 150.9783, note: "Stanwell Park，俯拍海崖大桥" },
+        { time: "09:45", name: "海崖大桥 Sea Cliff Bridge", lat: -34.2565, lng: 150.9715, note: "可停车走上人行道" },
+        { time: "11:00", name: "Minnamurra Lookout / 心形沙滩", lat: -34.6278, lng: 150.8622, note: "Minnamurra Point，俯看 Jones Beach" },
+        { time: "11:40", name: "基亚马灯塔 Kiama Lighthouse", lat: -34.6719, lng: 150.8625, note: "原表写还可往 lighthouse 方向走；吹孔 Blowhole 就在旁边" },
+        { time: "12:30", name: "Gerringong 观鲸台", lat: -34.7463, lng: 150.8328, note: "Tasman Dr / Belinda St。10 月仍是南迁季，不保证看得到。咨询 1300 654 262" },
+        { time: "15:00", name: "Hyams Beach", lat: -35.1017, lng: 150.6931, optional: true, note: "可跳过。白砂很有名，停车位少，周末易满" },
+        { time: "17:30", name: "住宿 · Jervis Bay", lat: -35.0417, lng: 150.6744, stay: true, note: "Huskisson / Vincentia 一带，酒店待补充" }
+      ]
+    },
+    {
+      id: "d4", date: "2026-10-02", wd: "周五", title: "Batemans Bay → Narooma", area: "Batemans Bay 小镇 → Narooma",
+      stay: "Narooma", color: "#c4921a", mode: "driving",
+      drive: "开车约 4h（不含游览）",
+      items: [
+        { time: "08:00", name: "Jervis Bay 出发", lat: -35.0417, lng: 150.6744 },
+        { time: "09:20", name: "Pebbly Beach", lat: -35.6094, lng: 150.3247, optional: true, note: "赶时间可不去。Murramarang 国家公园，沙滩袋鼠。末段沙石路" },
+        { time: "11:00", name: "One Tree Point Lookout", lat: -36.0685, lng: 150.1365, note: "Tuross Head，Tuross Blvd。观鲸/野餐点，在 Batemans 和 Narooma 之间" },
+        { time: "13:00", name: "Mill Bay Boardwalk", lat: -36.2080, lng: 150.1249, note: "北岸 Apex Park / Centenary Dr 起步，看魟鱼。咨询 1800 802 528" },
+        { time: "13:40", name: "Australia Rock", lat: -36.2114, lng: 150.1341, note: "Bar Rock Rd。石头上的洞像澳洲地图。和 Bar Rock 同一停车点，步行" },
+        { time: "14:00", name: "Bar Rock Lookout", lat: -36.2115, lng: 150.1345, skipNav: true, note: "俯看防波堤和蒙塔格岛，常有海豹。和 Australia Rock 同一停车点，全天导航不重复打点" },
+        { time: "14:40", name: "Narooma Beach", lat: -36.2195, lng: 150.1402 },
+        { time: "16:00", name: "住宿 · Narooma", lat: -36.2190, lng: 150.1310, stay: true, note: "酒店待补充" }
+      ]
+    },
+    {
+      id: "d5", date: "2026-10-03", wd: "周六", title: "Merimbula → Lakes Entrance", area: "Narooma → Merimbula → Lakes Entrance",
+      stay: "Lakes Entrance", color: "#6b4c9a", mode: "driving",
+      drive: "开车约 5h（不含游览）。海滩已按北→南排",
+      items: [
+        { time: "08:00", name: "Narooma 出发", lat: -36.2190, lng: 150.1310 },
+        { time: "10:00", name: "Tura Beach", lat: -36.8505, lng: 149.9260, note: "Merimbula 北郊" },
+        { time: "10:30", name: "Short Point Beach", lat: -36.8938, lng: 149.9186 },
+        { time: "11:00", name: "Merimbula Main Beach", lat: -36.8985, lng: 149.9095 },
+        { time: "11:30", name: "Middle Beach", lat: -36.8560, lng: 149.9320, note: "Tura / Merimbula 一带" },
+        { time: "12:00", name: "Merimbula Lake", lat: -36.8948, lng: 149.9055, note: "湖湾木栈道，看水鸟" },
+        { time: "15:00", name: "Jemmys Point Lookout", lat: -37.8722, lng: 147.9785, note: "Kalimna，Lakes Entrance 主观景台，看入口和九十里滩" },
+        { time: "15:40", name: "海豹观景（入口沙嘴）", lat: -37.8895, lng: 147.9732, note: "Cunninghame Arm / 入口步行桥一带看野生动物，不保证出现" },
+        { time: "17:00", name: "住宿 · Lakes Entrance", lat: -37.8810, lng: 147.9940, stay: true, note: "酒店待补充" }
+      ]
+    },
+    {
+      id: "d6", date: "2026-10-04", wd: "周日", title: "菲利普岛", area: "Lakes Entrance → Tarra-Bulga → 菲利普岛 → 吉朗",
+      stay: "吉朗 / 大洋路起点", color: "#b03a4a", mode: "driving",
+      drive: "开车约 6h。今日夏令时拨快 1 小时。Yarra Ranges / Warrandyte 和菲利普岛不顺路，列为备选",
+      items: [
+        { time: "08:00", name: "Lakes Entrance 出发", lat: -37.8810, lng: 147.9940, note: "夏令时已开始，按新时间出门" },
+        { time: "10:30", name: "Tarra-Bulga National Park", lat: -38.4470, lng: 146.5580, note: "Balook 雨林，Corra Boardwalk / 蕨树。顺路；另外两个公园见备选" },
+        { time: "14:00", name: "菲利普岛 The Nobbies", lat: -38.5180, lng: 145.1220, note: "海蚀崖和木栈道" },
+        { time: "17:30", name: "企鹅归巢 Penguin Parade", lat: -38.5125, lng: 145.1478, optional: true, book: "必须提前在 philipisland.com.au 买票", note: "黄昏开始。看完再赶吉朗会很晚，可改住 Cowes，或放弃企鹅直奔吉朗" },
+        { time: "备选", name: "Yarra Ranges National Park", lat: -37.7800, lng: 145.8000, optional: true, skipNav: true, note: "墨尔本东北，和今天路线相反" },
+        { time: "备选", name: "Warrandyte State Park", lat: -37.7460, lng: 145.2220, optional: true, skipNav: true, note: "墨尔本外东北，不顺路" },
+        { time: "20:30", name: "住宿 · 吉朗（大洋路起点）", lat: -38.1499, lng: 144.3617, stay: true, note: "原表问「吉朗？」——住这里 D7 最顺。酒店待补充" }
+      ]
+    },
+    {
+      id: "d7", date: "2026-10-05", wd: "周一", title: "环大洋路", area: "吉朗 → 十二门徒 → 阿波罗湾 → 墨尔本",
+      stay: "墨尔本", color: "#1f5a7a", mode: "driving",
+      drive: "开车约 11h，必须 6:00 出发。按原表西端景点先走、再沿海岸折返",
+      items: [
+        { time: "06:00", name: "吉朗出发", lat: -38.1499, lng: 144.3617, note: "先走内陆去门徒，再沿大洋路往回开，少走回头路" },
+        { time: "09:00", name: "十二门徒 Twelve Apostles", lat: -38.6618, lng: 143.1052, note: "免费。停车易满。咨询 Parks Victoria 13 19 63" },
+        { time: "09:50", name: "洛克大峡谷 Loch Ard Gorge", lat: -38.6470, lng: 143.0715 },
+        { time: "10:30", name: "伦敦桥 London Arch", lat: -38.6217, lng: 142.9903, note: "地图里仍常写 London Bridge, Port Campbell" },
+        { time: "11:00", name: "岩穴 The Grotto", lat: -38.6142, lng: 142.9950 },
+        { time: "13:00", name: "阿波罗湾 Apollo Bay", lat: -38.7554, lng: 143.6694, note: "午餐补给" },
+        { time: "13:40", name: "Marriner's Lookout", lat: -38.7475, lng: 143.6810, note: "阿波罗湾上方，看整段海湾" },
+        { time: "18:30", name: "住宿 · 墨尔本", lat: -37.8136, lng: 144.9631, stay: true, note: "酒店待补充。回程航班未写，按住一晚计" }
+      ]
+    }
+  ];
+
+  const COAST = [
+    [-33.55, 151.30], [-33.87, 151.28], [-34.05, 151.16], [-34.22, 150.99],
+    [-34.43, 150.91], [-34.67, 150.86], [-34.75, 150.84], [-35.04, 150.78],
+    [-35.12, 150.69], [-35.35, 150.48], [-35.71, 150.22], [-36.07, 150.15],
+    [-36.22, 150.14], [-36.90, 149.94], [-37.57, 149.76], [-37.80, 148.52],
+    [-37.89, 148.00], [-38.40, 147.05], [-38.85, 146.42], [-38.52, 145.25],
+    [-38.30, 144.70], [-38.34, 144.50], [-38.55, 143.98], [-38.76, 143.67],
+    [-38.66, 143.10], [-38.55, 142.80]
+  ];
+  const BAY = [
+    [-38.30, 144.70], [-38.09, 144.44], [-37.86, 144.90], [-38.14, 145.10],
+    [-38.30, 144.70]
+  ];
+
+  function zonedDate(isoLocal) {
+    const utcGuess = new Date(isoLocal + "Z");
+    const offsetOf = (ms) => {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"
+      }).formatToParts(new Date(ms));
+      const g = Object.fromEntries(parts.filter(p => p.type !== "literal").map(p => [p.type, p.value]));
+      return Date.UTC(+g.year, +g.month - 1, +g.day, +g.hour, +g.minute, +g.second) - ms;
+    };
+    const off = offsetOf(utcGuess.getTime());
+    let corrected = new Date(utcGuess.getTime() - off);
+    const off2 = offsetOf(corrected.getTime());
+    if (off2 !== off) corrected = new Date(utcGuess.getTime() - off2);
+    return corrected;
+  }
+
+  function pad(n) { return String(n).padStart(2, "0"); }
+
+  function itemWhen(day, item) {
+    if (!/^\d{2}:\d{2}$/.test(item.time)) return null;
+    return zonedDate(day.date + "T" + item.time + ":00");
+  }
+
+  function navHref(lat, lng, mode) {
+    return "https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + lng + "&travelmode=" + (mode || "driving");
+  }
+
+  function multiHref(stops, mode) {
+    const pts = stops.filter(s => !s.skipNav && s.lat);
+    if (!pts.length) return "#";
+    if (pts.length === 1) return navHref(pts[0].lat, pts[0].lng, mode);
+    const path = pts.map(s => s.lat + "," + s.lng).join("/");
+    return "https://www.google.com/maps/dir/" + path;
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
+  }
+
+  function placeLink(p, mode) {
+    return '<a class="place" target="_blank" rel="noopener" href="' + navHref(p.lat, p.lng, mode || "driving") + '">' + esc(p.name) + "</a>";
+  }
+
+  const W = 400, H = 640;
+  function xy(lat, lng) {
+    const x = (lng - 142.45) / 9.2 * 340 + 28;
+    const y = (-33.42 - lat) / 5.7 * 560 + 36;
+    return [x, y];
+  }
+
+  function wobblePath(coords) {
+    if (!coords.length) return "";
+    const pts = coords.map(([lat, lng], i) => {
+      const [x, y] = xy(lat, lng);
+      return [x + Math.sin(i * 1.7) * 1.6, y + Math.cos(i * 1.3) * 1.4];
+    });
+    let d = "M" + pts[0][0].toFixed(1) + "," + pts[0][1].toFixed(1);
+    for (let i = 1; i < pts.length; i++) {
+      const [x, y] = pts[i], [px, py] = pts[i - 1];
+      const mx = (px + x) / 2 + (y - py) * 0.07;
+      const my = (py + y) / 2 + (px - x) * 0.07;
+      d += " Q" + mx.toFixed(1) + "," + my.toFixed(1) + " " + x.toFixed(1) + "," + y.toFixed(1);
+    }
+    return d;
+  }
+
+  function houseMark(lat, lng, label, color) {
+    const [x, y] = xy(lat, lng);
+    const left = x > 280;
+    return '<g class="house" transform="translate(' + x.toFixed(1) + "," + y.toFixed(1) + ')">' +
+      '<polygon points="-7,0 0,-8 7,0 7,7 -7,7" fill="#fffaf1" stroke="' + color + '" stroke-width="1.6"/>' +
+      '<text x="' + (left ? -10 : 10) + '" y="4" font-size="9" font-weight="700" fill="#241c14" text-anchor="' + (left ? "end" : "start") + '">' + esc(label) + "</text></g>";
+  }
+
+  function renderOverview() {
+    const routes = DAYS.map(day => wobblePath(day.items.filter(i => i.lat && !i.optional).map(i => [i.lat, i.lng])));
+    let svg = '<svg viewBox="0 0 ' + W + " " + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="行程总览地图">' +
+      '<rect width="' + W + '" height="' + H + '" fill="#f7f0e2"/>' +
+      '<path d="' + wobblePath(COAST) + '" fill="none" stroke="#8aa4b8" stroke-width="7" stroke-linecap="round" opacity=".35"/>' +
+      '<path d="' + wobblePath(COAST) + '" fill="none" stroke="#2a2218" stroke-width="1.7" stroke-linecap="round"/>' +
+      '<path d="' + wobblePath(BAY) + '" fill="none" stroke="#2a2218" stroke-width="1.2" stroke-dasharray="3 3" opacity=".7"/>';
+    DAYS.forEach((day, i) => {
+      svg += '<path d="' + routes[i] + '" fill="none" stroke="' + day.color + '" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>';
+    });
+    svg += '<text x="300" y="28" font-size="11" fill="#6e6256">Tasman Sea</text>';
+    svg += '<text x="40" y="628" font-size="11" fill="#6e6256">Bass Strait</text>';
+    svg += houseMark(-33.8688, 151.2093, "D1–D2 悉尼", "#c45c26");
+    svg += houseMark(-35.0417, 150.6744, "D3 Jervis", "#3d7a32");
+    svg += houseMark(-36.2190, 150.1310, "D4 Narooma", "#c4921a");
+    svg += houseMark(-37.8810, 147.9940, "D5 Lakes", "#6b4c9a");
+    svg += houseMark(-38.1499, 144.3617, "D6 吉朗", "#b03a4a");
+    svg += houseMark(-37.8136, 144.9631, "D7 墨尔本", "#1f5a7a");
+    DAYS.forEach(day => {
+      day.items.filter(i => i.lat && !i.stay && !i.optional).forEach(i => {
+        const [x, y] = xy(i.lat, i.lng);
+        svg += '<a href="' + navHref(i.lat, i.lng, i.mode || day.mode) + '" target="_blank" rel="noopener">' +
+          '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="3.2" fill="#fffaf1" stroke="' + day.color + '" stroke-width="1.5"/>' +
+          "</a>";
+      });
+    });
+    svg += "</svg>";
+    document.getElementById("overview").innerHTML = svg;
+    document.getElementById("legend").innerHTML = DAYS.map(d =>
+      "<span><i style=\"background:" + d.color + "\"></i>" + d.id.toUpperCase() + " " + d.title + "</span>"
+    ).join("");
+  }
+
+  function dayMini(day) {
+    const pts = day.items.filter(i => i.lat);
+    const lats = pts.map(p => p.lat), lngs = pts.map(p => p.lng);
+    const minLat = Math.min.apply(null, lats) - 0.08, maxLat = Math.max.apply(null, lats) + 0.08;
+    const minLng = Math.min.apply(null, lngs) - 0.12, maxLng = Math.max.apply(null, lngs) + 0.12;
+    const w = 360, h = 180;
+    const px = (lat, lng) => [
+      (lng - minLng) / (maxLng - minLng || 1) * (w - 36) + 18,
+      (maxLat - lat) / (maxLat - minLat || 1) * (h - 36) + 18
+    ];
+    let d = "";
+    pts.filter(p => !p.optional).forEach((p, i) => {
+      const [x, y] = px(p.lat, p.lng);
+      d += (i ? " L" : "M") + x.toFixed(1) + "," + y.toFixed(1);
+    });
+    let s = '<svg viewBox="0 0 ' + w + " " + h + '" xmlns="http://www.w3.org/2000/svg">' +
+      '<rect width="' + w + '" height="' + h + '" rx="12" fill="#f7f0e2" stroke="#2a2218"/>' +
+      '<path d="' + d + '" fill="none" stroke="' + day.color + '" stroke-width="2.5" stroke-linecap="round"/>';
+    pts.forEach((p, i) => {
+      const [x, y] = px(p.lat, p.lng);
+      const label = p.name.replace(/（.*）/, "").split(" ")[0];
+      s += '<a href="' + navHref(p.lat, p.lng, p.mode || day.mode) + '" target="_blank" rel="noopener">' +
+        '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="4" fill="#fffaf1" stroke="' + day.color + '" stroke-width="1.6"/>' +
+        '<text x="' + (x + 6).toFixed(1) + '" y="' + (y - 6).toFixed(1) + '" font-size="8" fill="#241c14">' + (i + 1) + " " + esc(label) + "</text></a>";
+    });
+    return s + "</svg>";
+  }
+
+  function renderDays() {
+    document.getElementById("day-list").innerHTML = DAYS.map(day => {
+      const navStops = day.items.filter(i => i.lat && !i.optional && !i.skipNav);
+      const items = day.items.map(it => {
+        const mode = it.mode || day.mode;
+        const badges = (it.book ? '<span class="badge book">需提前订</span>' : "") +
+          (it.optional ? '<span class="badge skip">可跳过</span>' : "");
+        return '<li><div class="when">' + esc(it.time) + '</div><div class="dot" style="background:' + day.color + '"></div>' +
+          '<div class="what"><strong>' + placeLink({ name: it.name, lat: it.lat, lng: it.lng }, mode) + badges + "</strong>" +
+          (it.note ? '<div class="note">' + esc(it.note) + "</div>" : "") + "</div></li>";
+      }).join("");
+      return '<article class="day" id="' + day.id + '">' +
+        '<div class="day-hd" style="background:' + day.color + '" data-toggle="' + day.id + '">' +
+        "<div><h3>" + day.id.toUpperCase() + " · " + day.date.slice(5).replace("-", "/") + " " + day.wd + " · " + esc(day.title) + "</h3>" +
+        "<p>" + esc(day.area) + " · " + esc(day.drive) + "</p></div>" +
+        '<div class="stay">住 ' + esc(day.stay) + "</div></div>" +
+        '<div class="day-actions">' +
+        '<button class="btn" type="button" data-toggle="' + day.id + '">当日路线图</button>' +
+        '<a class="btn primary" target="_blank" rel="noopener" href="' + multiHref(navStops, day.mode) + '">一键全天导航</a>' +
+        "</div>" +
+        '<div class="day-map">' + dayMini(day) + '<p class="map-tip">编号按建议顺序。可跳过的点不进全天导航。</p></div>' +
+        '<ul class="tl">' + items + "</ul></article>";
+    }).join("");
+  }
+
+  function renderBookings() {
+    const b = BOOKINGS;
+    const block = (item) =>
+      '<div class="book"><span class="tag ' + item.status + '">' + (item.status === "ok" ? "已确认" : "待补充") + "</span>" +
+      "<h3>" + esc(item.title) + "</h3><p>" + esc(item.when) + "</p>" +
+      "<p>" + placeLink(item.place) + "</p>" +
+      item.lines.map(l => "<p>" + esc(l) + "</p>").join("") +
+      '<p class="meta">电话 ' + esc(item.phone) + "</p></div>";
+    const hotels = b.hotels.map(h =>
+      '<div class="book"><span class="tag wait">待补充</span><h3>' + esc(h.nights) + " · " + esc(h.area) + "</h3>" +
+      "<p>" + esc(h.date) + " · " + esc(h.name) + "</p>" +
+      "<p>" + placeLink({ name: h.area, lat: h.lat, lng: h.lng }) + " · " + esc(h.address) + "</p>" +
+      '<p class="meta">电话 ' + esc(h.phone) + " · 澳洲酒店常见入住 15:00 / 退房 10:00</p></div>"
+    ).join("");
+    document.getElementById("bookings").innerHTML = block(b.flightIn) + block(b.flightOut) + block(b.car) +
+      "<p class=\"meta\" style=\"margin:12px 0 0\">酒店（7 晚）</p>" + hotels;
+  }
+
+  function renderTodos() {
+    document.getElementById("todos").innerHTML = TODOS.map(t =>
+      typeof t === "object" ? '<li class="grp">' + esc(t.group) + "</li>" : "<li>" + esc(t) + "</li>"
+    ).join("");
+  }
+
+  function events() {
+    const list = [];
+    DAYS.forEach(day => {
+      day.items.forEach(it => {
+        const when = itemWhen(day, it);
+        if (when) list.push({ when, title: it.name, day: day.id.toUpperCase(), date: day.date, time: it.time, lat: it.lat, lng: it.lng, mode: it.mode || day.mode });
+      });
+    });
+    return list.sort((a, b) => a.when - b.when);
+  }
+
+  const EVENTS = events();
+
+  function fmtWhen(d) {
+    return new Intl.DateTimeFormat("zh-CN", {
+      timeZone: TZ, month: "numeric", day: "numeric", weekday: "short",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).format(d);
+  }
+
+  function tick() {
+    const now = new Date();
+    document.getElementById("clock").textContent = "澳洲东部现在 " + new Intl.DateTimeFormat("zh-CN", {
+      timeZone: TZ, year: "numeric", month: "numeric", day: "numeric", weekday: "short",
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"
+    }).format(now);
+    let next = EVENTS.find(e => e.when > now);
+    const label = document.getElementById("now-label");
+    const title = document.getElementById("now-title");
+    const whenEl = document.getElementById("now-when");
+    const count = document.getElementById("count");
+    if (!next) {
+      const last = EVENTS[EVENTS.length - 1];
+      label.textContent = now > last.when ? "行程已结束" : "下一站";
+      title.textContent = now > last.when ? "一路顺风" : last.title;
+      whenEl.textContent = "";
+      count.innerHTML = "";
+      return;
+    }
+    label.textContent = "下一站";
+    title.innerHTML = '<a class="place" style="color:#f7efe3" target="_blank" rel="noopener" href="' + navHref(next.lat, next.lng, next.mode) + '">' + esc(next.day + " · " + next.title) + "</a>";
+    whenEl.textContent = fmtWhen(next.when);
+    let diff = Math.max(0, next.when - now);
+    const days = Math.floor(diff / 86400000); diff %= 86400000;
+    const hours = Math.floor(diff / 3600000); diff %= 3600000;
+    const mins = Math.floor(diff / 60000); diff %= 60000;
+    const secs = Math.floor(diff / 1000);
+    count.innerHTML = [["天", days], ["时", pad(hours)], ["分", pad(mins)], ["秒", pad(secs)]].map(x =>
+      "<div><em>" + x[1] + "</em><span>" + x[0] + "</span></div>"
+    ).join("");
+  }
+
+  document.addEventListener("click", function (e) {
+    const t = e.target.closest("[data-toggle]");
+    if (!t) return;
+    if (t.tagName === "A") return;
+    const art = document.getElementById(t.getAttribute("data-toggle"));
+    if (art) art.classList.toggle("open");
+  });
+
+  const navLinks = document.querySelectorAll(".nav a");
+  const sections = ["now", "map", "book", "days", "todo"].map(id => document.getElementById(id));
+  function syncNav() {
+    const y = window.scrollY + 90;
+    let cur = sections[0];
+    sections.forEach(s => { if (s && s.offsetTop <= y) cur = s; });
+    navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + cur.id));
+  }
+  window.addEventListener("scroll", syncNav, { passive: true });
+
+  renderOverview();
+  renderBookings();
+  renderDays();
+  renderTodos();
+  tick();
+  setInterval(tick, 1000);
+  syncNav();
+})();
+</script>
+</body>
+</html>
