@@ -273,7 +273,7 @@ svg a { cursor: pointer; }
   <footer class="foot">
     <p><b>你需要亲手做的事（一次写清）</b></p>
     <ol>
-      <li>机票和租车已经写进页面。酒店发我后继续补。改完把 <code>index.html</code> 再推到 GitHub，Pages 才会更新。</li>
+      <li>机票、租车、酒店都已写进页面。改完把 <code>index.html</code> 再推到 GitHub，Pages 才会更新。</li>
       <li>用手机浏览器打开本页，点分享 → <b>添加到主屏幕</b>。国内打不开 github.io 时，把文件拖到 <b>https://app.netlify.com/drop</b>。</li>
     </ol>
   </footer>
@@ -348,12 +348,11 @@ svg a { cursor: pointer; }
       phone: "取 +61 2 9329 9590 · 还 +61 3 9659 8890"
     },
     hotels: [
-      { nights: "D1–D2", date: "9/29、9/30 两晚", area: "悉尼", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -33.8688, lng: 151.2093 },
-      { nights: "D3", date: "10/1 一晚", area: "Jervis Bay", name: "酒店名待补充", address: "Huskisson / Vincentia 一带", phone: "电话待补充", lat: -35.0417, lng: 150.6744 },
-      { nights: "D4", date: "10/2 一晚", area: "Narooma", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -36.2190, lng: 150.1310 },
-      { nights: "D5", date: "10/3 一晚", area: "Lakes Entrance", name: "酒店名待补充", address: "地址待补充", phone: "电话待补充", lat: -37.8810, lng: 147.9940 },
-      { nights: "D6–D7", date: "10/4、10/5 两晚", area: "墨尔本市区", name: "酒店名待补充", address: "稍后补店名地址电话", phone: "电话待补充", lat: -37.8136, lng: 144.9631 },
-      { nights: "D8", date: "10/6 一晚", area: "悉尼", name: "酒店名待补充", address: "JQ530 21:40 到 T2，第二天 11:10 出国", phone: "电话待补充", lat: -33.8688, lng: 151.2093 }
+      { status: "ok", nights: "D1–D2", date: "9/29、9/30 两晚", area: "北悉尼", name: "北悉尼美利通酒店（Meriton Suites North Sydney）", address: "80 Arthur Street, North Sydney NSW 2060", phone: "+61 2 8319 9899", lat: -33.8394, lng: 151.2072, extra: "你点名了 9/29 晚。10/1 才南下，9/30 按同一家连住；若不是告诉我。10/1 10:00 取车，过桥约 15–20 分钟，尽量早退。" },
+      { status: "ok", nights: "D3–D4", date: "10/1 15:00 → 10/3 10:00 两晚", area: "Malua Bay", name: "Malua Bay 民宿", address: "12 Tallawang Avenue, Malua Bay NSW 2536", phone: "房东 Peter（Airbnb 对话）", lat: -35.7945, lng: 150.2288, extra: "在 Batemans Bay 南边、Narooma 北边。不是 Jervis Bay / Narooma 镇上。" },
+      { status: "ok", nights: "D5", date: "10/3 15:00 → 10/4 10:00 一晚", area: "Lakes Entrance", name: "湖区入口民宿", address: "2A Orme Street, Lakes Entrance VIC 3909", phone: "房东 Grant（Airbnb 对话）", lat: -37.8789, lng: 148.0012, extra: "入住 15:00，退房 10:00。" },
+      { status: "ok", nights: "D6–D7", date: "10/4 15:00 → 10/6 10:30–11:00 两晚", area: "墨尔本市区", name: "墨尔本帝盛酒店 Dorsett Melbourne", address: "615 Little Lonsdale Street, Melbourne VIC 3000", phone: "+61 3 9123 4888", lat: -37.8116, lng: 144.9542, extra: "订单 454524691366。帝盛大床房，可住 2 人，可寄行李。无餐食，早餐 AUD39/人。入住人 ZOU/ZIYI、HUANG/SIYAO。离 Franklin St 还车点步行约 8 分钟。" },
+      { status: "ok", nights: "D8", date: "10/6 → 10/7 一晚", area: "悉尼机场", name: "斯坦福德广场悉尼机场酒店及会议中心", address: "241 O'Riordan Street, Mascot NSW 2020", phone: "+61 2 9317 2200", lat: -33.9339, lng: 151.1928, extra: "高级特大床房。JQ530 21:40 到 T2，酒店就在机场旁边。次日国际航班在 T1，酒店有机场接驳。" }
     ]
   };
 
@@ -364,8 +363,8 @@ svg a { cursor: pointer; }
     "旅行保险（含租车自驾和医疗）",
     "通知银行将有澳大利亚消费；准备一张 Visa/Mastercard",
     { group: "必须先订" },
-    "酒店：悉尼×2（D1–D2）、Jervis Bay×1、Narooma×1、Lakes Entrance×1、墨尔本市区×2（D6–D7）、悉尼×1（D8，10/6 晚）",
     "菲利普岛企鹅归巢（Penguin Parade）——要看就必须网上提前买，现场经常售罄",
+    "9/30 若不住北悉尼美利通，把真正酒店发我（现在按连住两晚写的）",
     { group: "可选但容易忘" },
     "歌剧院内部场馆参观 / 海港大桥 BridgeClimb（本行程按外观景，不订也能走）",
     "Pebbly Beach 在 Murramarang 国家公园，末段沙石路，小车通常可走，赶时间可跳过",
@@ -375,14 +374,14 @@ svg a { cursor: pointer; }
     "10/4 周日澳洲夏令时拨快 1 小时，D6 早上按新时间出发",
     "D3 取车是 10:00 市区，不要按机场 8 点取车来排",
     "D7 大洋路从墨尔本市区出发，比吉朗更远，6:00 必须上路",
-    "10/6 10:00 墨尔本 Franklin St 还车；当晚 JQ530 20:15 MEL T4",
-    "10/7 11:10 悉尼飞香港，T2 过夜后注意航站楼"
+    "10/6 先 10:00 Franklin St 还车（离帝盛步行约 8 分钟），再 10:30–11:00 酒店离店；当晚 JQ530 20:15 MEL T4",
+    "10/7 11:10 悉尼飞香港在 T1；斯坦福德在 T2 旁边，早上坐酒店接驳去 T1"
   ];
 
   const DAYS = [
     {
       id: "d1", date: "2026-09-29", wd: "周二", title: "悉尼市区", area: "悉尼（11:45 抵达）",
-      stay: "悉尼", color: "#c45c26", mode: "walking",
+      stay: "北悉尼美利通", color: "#c45c26", mode: "walking",
       drive: "景点之间步行约 30min，不含游览",
       items: [
         { time: "11:45", name: "抵达悉尼机场 T1", lat: -33.9399, lng: 151.1753, note: "国泰 CX181，香港 00:45 起飞。放行李/入市区，预留到 13:30", mode: "driving", skipNav: true },
@@ -392,12 +391,12 @@ svg a { cursor: pointer; }
         { time: "16:00", name: "环形码头 Circular Quay", lat: -33.8613, lng: 151.2108 },
         { time: "16:30", name: "悉尼歌剧院", lat: -33.8568, lng: 151.2153, note: "外观即可。内部参观需提前订", book: "内部参观需提前订" },
         { time: "17:30", name: "海港大桥", lat: -33.8523, lng: 151.2108, note: "桥下或对岸观景；上桥攀爬需另订 BridgeClimb" },
-        { time: "住", name: "住宿 · 悉尼", lat: -33.8688, lng: 151.2093, stay: true, skipNav: true, note: "酒店名待补充" }
+        { time: "住", name: "住宿 · 北悉尼美利通", lat: -33.8394, lng: 151.2072, stay: true, skipNav: true, note: "80 Arthur St，电话 +61 2 8319 9899。机场火车到 North Sydney 站很近" }
       ]
     },
     {
       id: "d2", date: "2026-09-30", wd: "周三", title: "东海岸线", area: "悉尼",
-      stay: "悉尼", color: "#1f7a6c", mode: "walking",
+      stay: "北悉尼美利通", color: "#1f7a6c", mode: "walking",
       drive: "去程通勤约 55min · 景点步行约 4h30 · 返程约 1h15",
       items: [
         { time: "09:00", name: "出发去邦迪", lat: -33.8915, lng: 151.2767, note: "公交/轻轨约 55min，不是自驾日", mode: "transit", skipNav: true },
@@ -406,109 +405,111 @@ svg a { cursor: pointer; }
         { time: "12:30", name: "马鲁布拉 Maroubra Beach", lat: -33.9482, lng: 151.2540 },
         { time: "14:00", name: "拉佩鲁兹 La Perouse", lat: -33.9889, lng: 151.2339, note: "南线终点，看 Botany Bay" },
         { time: "备选", name: "Long Reef 海岸步道", lat: -33.7394, lng: 151.3125, optional: true, note: "在北岸 Collaroy，和当天南线完全不顺路，二选一即可", skipNav: true },
-        { time: "17:00", name: "返回市区住宿", lat: -33.8688, lng: 151.2093, stay: true, note: "返程约 1h15", mode: "transit" }
+        { time: "17:00", name: "返回北悉尼美利通", lat: -33.8394, lng: 151.2072, stay: true, note: "80 Arthur Street。返程约 1h15", mode: "transit" }
       ]
     },
     {
-      id: "d3", date: "2026-10-01", wd: "周四", title: "南下 Jervis Bay", area: "卧龙岗 → Kiama → Gerringong → Jervis Bay",
-      stay: "Jervis Bay", color: "#3d7a32", mode: "driving",
-      drive: "开车约 3h，不含取车和游览。10:00 市区取车，已按北→南重排",
+      id: "d3", date: "2026-10-01", wd: "周四", title: "南下 Malua Bay", area: "取车 → 海崖大桥 / Kiama → Malua Bay 民宿",
+      stay: "Malua Bay", color: "#3d7a32", mode: "driving",
+      drive: "悉尼到 Malua Bay 约 4h。民宿 15:00 入住，中途只能停 1–2 个点",
       items: [
-        { time: "10:00", name: "悉尼市区取车", lat: -33.8758, lng: 151.2129, note: "65 William Street，电话 +61 2 9329 9590。门店 07:30 开门" },
-        { time: "11:00", name: "Bald Hill Lookout", lat: -34.2208, lng: 150.9783, note: "Stanwell Park，俯拍海崖大桥" },
-        { time: "11:25", name: "海崖大桥 Sea Cliff Bridge", lat: -34.2565, lng: 150.9715, note: "可停车走上人行道" },
-        { time: "12:40", name: "Minnamurra Lookout / 心形沙滩", lat: -34.6278, lng: 150.8622, note: "Minnamurra Point，俯看 Jones Beach" },
-        { time: "13:15", name: "基亚马灯塔 Kiama Lighthouse", lat: -34.6719, lng: 150.8625, note: "吹孔 Blowhole 就在旁边" },
-        { time: "14:00", name: "Gerringong 观鲸台", lat: -34.7463, lng: 150.8328, note: "Tasman Dr / Belinda St。10 月仍是南迁季，不保证看得到。咨询 1300 654 262" },
-        { time: "16:00", name: "Hyams Beach", lat: -35.1017, lng: 150.6931, optional: true, note: "可跳过。白砂很有名，停车位少，周末易满" },
-        { time: "18:00", name: "住宿 · Jervis Bay", lat: -35.0417, lng: 150.6744, stay: true, note: "Huskisson / Vincentia 一带，酒店待补充" }
+        { time: "10:00", name: "悉尼市区取车", lat: -33.8758, lng: 151.2129, note: "65 William Street，+61 2 9329 9590。从北悉尼美利通过桥约 15–20 分钟" },
+        { time: "11:00", name: "Bald Hill Lookout", lat: -34.2208, lng: 150.9783, note: "Stanwell Park，俯拍海崖大桥。停留要短" },
+        { time: "11:20", name: "海崖大桥 Sea Cliff Bridge", lat: -34.2565, lng: 150.9715, note: "可停车走上人行道" },
+        { time: "12:40", name: "基亚马灯塔 Kiama Lighthouse", lat: -34.6719, lng: 150.8625, optional: true, note: "赶路可跳过。吹孔在旁边" },
+        { time: "13:10", name: "Gerringong 观鲸台", lat: -34.7463, lng: 150.8328, optional: true, note: "赶 15:00 入住可跳过" },
+        { time: "备选", name: "Hyams Beach", lat: -35.1017, lng: 150.6931, optional: true, skipNav: true, note: "绕 Jervis Bay 会晚到民宿，建议这次不去" },
+        { time: "15:00", name: "入住 Malua Bay 民宿", lat: -35.7945, lng: 150.2288, stay: true, note: "12 Tallawang Avenue，房东 Peter。住两晚，10/3 10:00 退房" }
       ]
     },
     {
-      id: "d4", date: "2026-10-02", wd: "周五", title: "Batemans Bay → Narooma", area: "Batemans Bay 小镇 → Narooma",
-      stay: "Narooma", color: "#c4921a", mode: "driving",
-      drive: "开车约 4h（不含游览）",
+      id: "d4", date: "2026-10-02", wd: "周五", title: "Narooma 一日", area: "Malua Bay 出发，玩 Narooma，晚上回民宿",
+      stay: "Malua Bay", color: "#c4921a", mode: "driving",
+      drive: "民宿到 Narooma 约 40–50min，当晚回 12 Tallawang Ave",
       items: [
-        { time: "08:00", name: "Jervis Bay 出发", lat: -35.0417, lng: 150.6744 },
-        { time: "09:20", name: "Pebbly Beach", lat: -35.6094, lng: 150.3247, optional: true, note: "赶时间可不去。Murramarang 国家公园，沙滩袋鼠。末段沙石路" },
-        { time: "11:00", name: "One Tree Point Lookout", lat: -36.0685, lng: 150.1365, note: "Tuross Head，Tuross Blvd。观鲸/野餐点，在 Batemans 和 Narooma 之间" },
-        { time: "13:00", name: "Mill Bay Boardwalk", lat: -36.2080, lng: 150.1249, note: "北岸 Apex Park / Centenary Dr 起步，看魟鱼。咨询 1800 802 528" },
-        { time: "13:40", name: "Australia Rock", lat: -36.2114, lng: 150.1341, note: "Bar Rock Rd。石头上的洞像澳洲地图。和 Bar Rock 同一停车点，步行" },
-        { time: "14:00", name: "Bar Rock Lookout", lat: -36.2115, lng: 150.1345, skipNav: true, note: "俯看防波堤和蒙塔格岛，常有海豹。和 Australia Rock 同一停车点，全天导航不重复打点" },
-        { time: "14:40", name: "Narooma Beach", lat: -36.2195, lng: 150.1402 },
-        { time: "16:00", name: "住宿 · Narooma", lat: -36.2190, lng: 150.1310, stay: true, note: "酒店待补充" }
+        { time: "08:30", name: "Malua Bay 出发", lat: -35.7945, lng: 150.2288 },
+        { time: "09:20", name: "Pebbly Beach", lat: -35.6094, lng: 150.3247, optional: true, note: "在北面，要折回 Batemans 以北。赶时间可不去。沙滩袋鼠，末段沙石路" },
+        { time: "10:30", name: "One Tree Point Lookout", lat: -36.0685, lng: 150.1365, note: "Tuross Head，在民宿和 Narooma 之间" },
+        { time: "12:00", name: "Mill Bay Boardwalk", lat: -36.2080, lng: 150.1249, note: "北岸 Apex Park / Centenary Dr，看魟鱼。咨询 1800 802 528" },
+        { time: "12:40", name: "Australia Rock", lat: -36.2114, lng: 150.1341, note: "Bar Rock Rd。和 Bar Rock 同一停车点" },
+        { time: "13:00", name: "Bar Rock Lookout", lat: -36.2115, lng: 150.1345, skipNav: true, note: "俯看防波堤和蒙塔格岛，常有海豹" },
+        { time: "13:30", name: "Narooma Beach", lat: -36.2195, lng: 150.1402 },
+        { time: "17:00", name: "回到 Malua Bay 民宿", lat: -35.7945, lng: 150.2288, stay: true, note: "12 Tallawang Avenue，第二天 10:00 退房去 Lakes Entrance" }
       ]
     },
     {
-      id: "d5", date: "2026-10-03", wd: "周六", title: "Merimbula → Lakes Entrance", area: "Narooma → Merimbula → Lakes Entrance",
+      id: "d5", date: "2026-10-03", wd: "周六", title: "Merimbula → Lakes Entrance", area: "Malua Bay → Merimbula → Lakes Entrance",
       stay: "Lakes Entrance", color: "#6b4c9a", mode: "driving",
-      drive: "开车约 5h（不含游览）。海滩已按北→南排",
+      drive: "开车约 5h。民宿 15:00 入住",
       items: [
-        { time: "08:00", name: "Narooma 出发", lat: -36.2190, lng: 150.1310 },
-        { time: "10:00", name: "Tura Beach", lat: -36.8505, lng: 149.9260, note: "Merimbula 北郊" },
-        { time: "10:30", name: "Short Point Beach", lat: -36.8938, lng: 149.9186 },
-        { time: "11:00", name: "Merimbula Main Beach", lat: -36.8985, lng: 149.9095 },
-        { time: "11:30", name: "Middle Beach", lat: -36.8560, lng: 149.9320, note: "Tura / Merimbula 一带" },
-        { time: "12:00", name: "Merimbula Lake", lat: -36.8948, lng: 149.9055, note: "湖湾木栈道，看水鸟" },
-        { time: "15:00", name: "Jemmys Point Lookout", lat: -37.8722, lng: 147.9785, note: "Kalimna，Lakes Entrance 主观景台，看入口和九十里滩" },
-        { time: "15:40", name: "海豹观景（入口沙嘴）", lat: -37.8895, lng: 147.9732, note: "Cunninghame Arm / 入口步行桥一带看野生动物，不保证出现" },
-        { time: "17:00", name: "住宿 · Lakes Entrance", lat: -37.8810, lng: 147.9940, stay: true, note: "酒店待补充" }
+        { time: "10:00", name: "Malua Bay 退房出发", lat: -35.7945, lng: 150.2288, note: "12 Tallawang Avenue，10:00 退房" },
+        { time: "11:30", name: "Tura Beach", lat: -36.8505, lng: 149.9260, note: "Merimbula 北郊" },
+        { time: "12:00", name: "Short Point Beach", lat: -36.8938, lng: 149.9186 },
+        { time: "12:20", name: "Merimbula Main Beach", lat: -36.8985, lng: 149.9095 },
+        { time: "12:40", name: "Middle Beach", lat: -36.8560, lng: 149.9320, optional: true, note: "时间紧可跳过" },
+        { time: "13:00", name: "Merimbula Lake", lat: -36.8948, lng: 149.9055, note: "湖湾木栈道，看水鸟" },
+        { time: "15:00", name: "入住 2A Orme Street", lat: -37.8789, lng: 148.0012, stay: true, note: "房东 Grant。入住 15:00，次日 10:00 退房" },
+        { time: "16:00", name: "Jemmys Point Lookout", lat: -37.8722, lng: 147.9785, note: "Kalimna，看入口和九十里滩" },
+        { time: "16:40", name: "海豹观景（入口沙嘴）", lat: -37.8895, lng: 147.9732, note: "Cunninghame Arm / 入口步行桥一带，不保证出现" }
       ]
     },
     {
       id: "d6", date: "2026-10-04", wd: "周日", title: "菲利普岛", area: "Lakes Entrance → Tarra-Bulga → 菲利普岛 → 墨尔本市区",
-      stay: "墨尔本市区", color: "#b03a4a", mode: "driving",
-      drive: "开车约 6.5h。今日夏令时拨快 1 小时。当晚住墨尔本市区，酒店稍后补",
+      stay: "墨尔本帝盛", color: "#b03a4a", mode: "driving",
+      drive: "开车约 6.5h。今日夏令时拨快 1 小时。当晚住帝盛酒店",
       items: [
-        { time: "08:00", name: "Lakes Entrance 出发", lat: -37.8810, lng: 147.9940, note: "夏令时已开始，按新时间出门" },
+        { time: "08:00", name: "Lakes Entrance 出发", lat: -37.8789, lng: 148.0012, note: "2A Orme Street 10:00 退房。夏令时已开始" },
         { time: "10:30", name: "Tarra-Bulga National Park", lat: -38.4470, lng: 146.5580, note: "Balook 雨林，Corra Boardwalk / 蕨树。顺路；另外两个公园见备选" },
         { time: "14:00", name: "菲利普岛 The Nobbies", lat: -38.5180, lng: 145.1220, note: "海蚀崖和木栈道" },
         { time: "17:30", name: "企鹅归巢 Penguin Parade", lat: -38.5125, lng: 145.1478, optional: true, book: "必须提前在 philipisland.com.au 买票", note: "黄昏开始。看完回墨尔本市区约 1.5–2h，大约 22:00 到；不看企鹅可下午进城" },
         { time: "备选", name: "Yarra Ranges National Park", lat: -37.7800, lng: 145.8000, optional: true, skipNav: true, note: "墨尔本东北，和今天路线相反" },
         { time: "备选", name: "Warrandyte State Park", lat: -37.7460, lng: 145.2220, optional: true, skipNav: true, note: "墨尔本外东北，不顺路" },
-        { time: "21:00", name: "住宿 · 墨尔本市区", lat: -37.8136, lng: 144.9631, stay: true, note: "酒店待补充。D6、D7 连住两晚" }
+        { time: "21:00", name: "住宿 · 墨尔本帝盛酒店", lat: -37.8116, lng: 144.9542, stay: true, note: "615 Little Lonsdale St，+61 3 9123 4888。入住 15:00 起，连住两晚" }
       ]
     },
     {
       id: "d7", date: "2026-10-05", wd: "周一", title: "环大洋路", area: "墨尔本 → 十二门徒 → 阿波罗湾 → 墨尔本",
-      stay: "墨尔本市区", color: "#1f5a7a", mode: "driving",
+      stay: "墨尔本帝盛", color: "#1f5a7a", mode: "driving",
       drive: "从市区出发约 12h，必须 6:00 出门。按原表西端景点先走、再沿海岸折返",
       items: [
-        { time: "06:00", name: "墨尔本市区出发", lat: -37.8136, lng: 144.9631, note: "先走内陆去门徒，再沿大洋路往回开，少走回头路" },
+        { time: "06:00", name: "帝盛酒店出发", lat: -37.8116, lng: 144.9542, note: "615 Little Lonsdale St。先走内陆去门徒，再沿大洋路往回开" },
         { time: "09:00", name: "十二门徒 Twelve Apostles", lat: -38.6618, lng: 143.1052, note: "免费。停车易满。咨询 Parks Victoria 13 19 63" },
         { time: "09:50", name: "洛克大峡谷 Loch Ard Gorge", lat: -38.6470, lng: 143.0715 },
         { time: "10:30", name: "伦敦桥 London Arch", lat: -38.6217, lng: 142.9903, note: "地图里仍常写 London Bridge, Port Campbell" },
         { time: "11:00", name: "岩穴 The Grotto", lat: -38.6142, lng: 142.9950 },
         { time: "13:00", name: "阿波罗湾 Apollo Bay", lat: -38.7554, lng: 143.6694, note: "午餐补给" },
         { time: "13:40", name: "Marriner's Lookout", lat: -38.7475, lng: 143.6810, note: "阿波罗湾上方，看整段海湾" },
-        { time: "19:00", name: "住宿 · 墨尔本市区", lat: -37.8136, lng: 144.9631, stay: true, note: "同一家酒店。次日 10:00 还车，今晚早睡" }
+        { time: "19:00", name: "住宿 · 墨尔本帝盛酒店", lat: -37.8116, lng: 144.9542, stay: true, note: "同一家。次日 10:00 还车，酒店 10:30–11:00 离店，今晚早睡" }
       ]
     },
     {
       id: "d8", date: "2026-10-06", wd: "周二", title: "还车返悉尼", area: "墨尔本市区 → 机场 → 悉尼",
-      stay: "悉尼", color: "#5c4a3a", mode: "transit", overview: false,
+      stay: "悉尼机场斯坦福德", color: "#5c4a3a", mode: "transit", overview: false,
       drive: "10:00 还车，晚上飞机。不要再排长途自驾",
       items: [
-        { time: "10:00", name: "墨尔本还车", lat: -37.8110, lng: 144.9605, note: "Shop 3/8 Franklin Street，电话 +61 3 9659 8890。退房也常是 10:00，行李先放车上" },
+        { time: "10:00", name: "墨尔本还车", lat: -37.8110, lng: 144.9605, note: "Shop 3/8 Franklin Street，+61 3 9659 8890。离帝盛步行约 8 分钟。先还车，再回酒店 10:30–11:00 取行李离店" },
         { time: "20:15", name: "捷星 JQ530 起飞", lat: -37.6690, lng: 144.8410, note: "MEL T4，经济舱无餐食。提前 2 小时到机场", mode: "driving" },
-        { time: "21:40", name: "抵达悉尼机场 T2", lat: -33.9331, lng: 151.1770, note: "入市区过夜，酒店待补充" },
-        { time: "住", name: "住宿 · 悉尼", lat: -33.8688, lng: 151.2093, stay: true, skipNav: true, note: "次日 11:10 飞香港，不要住太远" }
+        { time: "21:40", name: "抵达悉尼机场 T2", lat: -33.9331, lng: 151.1770, note: "酒店就在机场旁，走路/接驳几分钟" },
+        { time: "住", name: "斯坦福德广场悉尼机场酒店", lat: -33.9339, lng: 151.1928, stay: true, note: "241 O'Riordan St，+61 2 9317 2200。次日 11:10 国际航班在 T1，坐酒店接驳" }
       ]
     }
   ];
 
   const COAST = [
-    [-33.55, 151.30], [-33.87, 151.28], [-34.05, 151.16], [-34.22, 150.99],
-    [-34.43, 150.91], [-34.67, 150.86], [-34.75, 150.84], [-35.04, 150.78],
-    [-35.12, 150.69], [-35.35, 150.48], [-35.71, 150.22], [-36.07, 150.15],
-    [-36.22, 150.14], [-36.90, 149.94], [-37.57, 149.76], [-37.80, 148.52],
-    [-37.89, 148.00], [-38.40, 147.05], [-38.85, 146.42], [-38.52, 145.25],
-    [-38.30, 144.70], [-38.34, 144.50], [-38.55, 143.98], [-38.76, 143.67],
+    [-33.58, 151.33], [-33.80, 151.30], [-33.85, 151.28], [-33.92, 151.26],
+    [-33.99, 151.23], [-34.10, 151.16], [-34.22, 150.99], [-34.43, 150.91],
+    [-34.67, 150.86], [-34.75, 150.84], [-35.02, 150.80], [-35.08, 150.77],
+    [-35.12, 150.70], [-35.18, 150.68], [-35.10, 150.75], [-35.35, 150.48],
+    [-35.71, 150.22], [-35.79, 150.23], [-36.07, 150.15], [-36.22, 150.14],
+    [-36.90, 149.94], [-37.50, 149.98], [-37.57, 149.76], [-37.80, 148.52],
+    [-37.89, 148.00], [-38.16, 147.45], [-38.48, 146.98], [-38.91, 146.38],
+    [-38.50, 145.35], [-38.52, 145.12], [-38.30, 144.70], [-38.14, 144.75],
+    [-38.10, 144.42], [-38.34, 144.50], [-38.55, 143.98], [-38.76, 143.67],
     [-38.66, 143.10], [-38.55, 142.80]
   ];
   const BAY = [
-    [-38.30, 144.70], [-38.09, 144.44], [-37.86, 144.90], [-38.14, 145.10],
-    [-38.30, 144.70]
+    [-38.30, 144.70], [-38.27, 144.66], [-38.09, 144.44], [-37.83, 144.80],
+    [-37.86, 144.97], [-38.14, 145.12], [-38.30, 144.70]
   ];
 
   const LAND = COAST.concat([
@@ -561,27 +562,106 @@ svg a { cursor: pointer; }
     return '<a class="place" target="_blank" rel="noopener" href="' + navHref(p.lat, p.lng, mode || "driving") + '">' + esc(p.name) + "</a>";
   }
 
-  const W = 400, H = 640;
+  const W = 400, H = 900;
   function xy(lat, lng) {
     const x = (lng - 142.45) / 9.2 * 340 + 28;
-    const y = (-33.42 - lat) / 5.7 * 560 + 36;
+    const y = 330 + (-33.42 - lat) / 5.7 * 530;
     return [x, y];
   }
 
-  function wobblePath(coords) {
+  function geoPath(coords, jitter) {
     if (!coords.length) return "";
+    jitter = jitter || 0;
     const pts = coords.map(([lat, lng], i) => {
       const [x, y] = xy(lat, lng);
-      return [x + Math.sin(i * 1.7) * 1.6, y + Math.cos(i * 1.3) * 1.4];
+      return [x + Math.sin(i * 1.7) * jitter, y + Math.cos(i * 1.3) * jitter];
     });
     let d = "M" + pts[0][0].toFixed(1) + "," + pts[0][1].toFixed(1);
     for (let i = 1; i < pts.length; i++) {
       const [x, y] = pts[i], [px, py] = pts[i - 1];
-      const mx = (px + x) / 2 + (y - py) * 0.07;
-      const my = (py + y) / 2 + (px - x) * 0.07;
+      const mx = (px + x) / 2 + (y - py) * 0.04;
+      const my = (py + y) / 2 + (px - x) * 0.04;
       d += " Q" + mx.toFixed(1) + "," + my.toFixed(1) + " " + x.toFixed(1) + "," + y.toFixed(1);
     }
     return d;
+  }
+
+  function wobblePath(coords) { return geoPath(coords, 0.5); }
+
+  function sydXY(lat, lng) {
+    return [
+      12 + (lng - 151.135) / 0.160 * 376,
+      34 + (-33.808 - lat) / 0.195 * 268
+    ];
+  }
+
+  function sydPath(coords) {
+    const pts = coords.map(([lat, lng]) => sydXY(lat, lng));
+    let d = "M" + pts[0][0].toFixed(1) + "," + pts[0][1].toFixed(1);
+    for (let i = 1; i < pts.length; i++) d += " L" + pts[i][0].toFixed(1) + "," + pts[i][1].toFixed(1);
+    return d + " Z";
+  }
+
+  function pin(x, y, color, label, href, anchor) {
+    const a = anchor || "start";
+    const tx = a === "end" ? -8 : (a === "middle" ? 0 : 8);
+    return '<a href="' + href + '" target="_blank" rel="noopener">' +
+      '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="4.2" fill="#fffaf1" stroke="' + color + '" stroke-width="1.7"/>' +
+      '<text x="' + (x + tx).toFixed(1) + '" y="' + (y - 7).toFixed(1) + '" font-size="8.5" font-weight="700" fill="#241c14" text-anchor="' + a + '" stroke="#fffaf1" stroke-width="3" paint-order="stroke">' + esc(label) + "</text></a>";
+  }
+
+  function sydneyInset() {
+    const southLand = [
+      [-33.833, 151.281], [-33.848, 151.268], [-33.868, 151.248], [-33.860, 151.230],
+      [-33.856, 151.215], [-33.858, 151.209], [-33.860, 151.201], [-33.872, 151.205],
+      [-33.885, 151.198], [-33.910, 151.190], [-33.933, 151.178], [-33.948, 151.175],
+      [-33.965, 151.185], [-33.980, 151.200], [-33.989, 151.234], [-33.970, 151.248],
+      [-33.948, 151.254], [-33.921, 151.256], [-33.905, 151.268], [-33.891, 151.277],
+      [-33.870, 151.270], [-33.848, 151.278], [-33.833, 151.281]
+    ];
+    const northLand = [
+      [-33.808, 151.297], [-33.823, 151.297], [-33.818, 151.275], [-33.822, 151.250],
+      [-33.828, 151.228], [-33.838, 151.210], [-33.845, 151.195], [-33.808, 151.190],
+      [-33.808, 151.297]
+    ];
+    const harbour = [
+      [-33.825, 151.286], [-33.830, 151.250], [-33.838, 151.218], [-33.842, 151.207],
+      [-33.848, 151.198], [-33.858, 151.198], [-33.858, 151.209], [-33.856, 151.216],
+      [-33.850, 151.230], [-33.868, 151.250], [-33.848, 151.272], [-33.833, 151.280],
+      [-33.825, 151.286]
+    ];
+    const botany = [
+      [-33.965, 151.190], [-33.978, 151.185], [-33.990, 151.200], [-33.989, 151.232],
+      [-33.972, 151.220], [-33.955, 151.205], [-33.948, 151.190], [-33.965, 151.190]
+    ];
+    const [bx1, by1] = sydXY(-33.8523, 151.2108);
+    const [bx2, by2] = sydXY(-33.8548, 151.2095);
+    let s = '<rect x="8" y="8" width="384" height="304" rx="14" fill="#9ec5d8" stroke="#2a2218" stroke-width="1.6"/>';
+    s += '<text x="20" y="26" font-size="11" font-weight="700" fill="#1f4f7a">悉尼放大 · 海港 / 北岸 / 东海岸</text>';
+    s += '<path d="' + sydPath(southLand) + '" fill="#f3e2c0" stroke="#2a2218" stroke-width="1.15" stroke-linejoin="round"/>';
+    s += '<path d="' + sydPath(northLand) + '" fill="#f3e2c0" stroke="#2a2218" stroke-width="1.15" stroke-linejoin="round"/>';
+    s += '<path d="' + sydPath(harbour) + '" fill="#7eb3cc" stroke="#2a2218" stroke-width="0.8" opacity=".95"/>';
+    s += '<path d="' + sydPath(botany) + '" fill="#7eb3cc" stroke="#2a2218" stroke-width="0.8"/>';
+    s += '<line x1="' + bx1.toFixed(1) + '" y1="' + by1.toFixed(1) + '" x2="' + bx2.toFixed(1) + '" y2="' + by2.toFixed(1) + '" stroke="#2a2218" stroke-width="2.2"/>';
+    const marks = [
+      [-33.8394, 151.2072, "#c45c26", "D1–D2 美利通", "end"],
+      [-33.8568, 151.2153, "#c45c26", "歌剧院", "start"],
+      [-33.8523, 151.2108, "#c45c26", "大桥", "end"],
+      [-33.8758, 151.2129, "#3d7a32", "取车 William St", "start"],
+      [-33.8915, 151.2767, "#1f7a6c", "邦迪", "end"],
+      [-33.9209, 151.2555, "#1f7a6c", "库吉", "start"],
+      [-33.9482, 151.2540, "#1f7a6c", "马鲁布拉", "start"],
+      [-33.9889, 151.2339, "#1f7a6c", "拉佩鲁兹", "start"],
+      [-33.9399, 151.1753, "#5c4a3a", "SYD 机场", "end"],
+      [-33.9339, 151.1928, "#5c4a3a", "D8 斯坦福德", "start"]
+    ];
+    marks.forEach(([lat, lng, color, label, anchor]) => {
+      const [x, y] = sydXY(lat, lng);
+      s += pin(x, y, color, label, navHref(lat, lng), anchor);
+    });
+    s += '<text x="300" y="48" font-size="9" fill="#3f5a6a">Tasman Sea</text>';
+    s += '<text x="24" y="292" font-size="9" fill="#3f5a6a">Botany Bay</text>';
+    return s;
   }
 
   function houseMark(lat, lng, label, color) {
@@ -600,20 +680,22 @@ svg a { cursor: pointer; }
     const driveDays = DAYS.filter(d => d.overview !== false);
     const routes = driveDays.map(day => wobblePath(day.items.filter(i => i.lat && !i.optional).map(i => [i.lat, i.lng])));
     const land = wobblePath(LAND) + " Z";
-    let svg = '<svg viewBox="0 0 ' + W + " " + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="行程总览地图">' +
-      '<rect width="' + W + '" height="' + H + '" fill="#c5dbe8"/>' +
-      '<path d="' + land + '" fill="#ead9b4" stroke="#2a2218" stroke-width="1.6" stroke-linejoin="round"/>' +
-      '<path d="' + wobblePath(BAY) + '" fill="#c5dbe8" stroke="#2a2218" stroke-width="1.1"/>';
+    let svg = '<svg viewBox="0 0 ' + W + " " + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="行程总览地图">';
+    svg += '<rect width="' + W + '" height="' + H + '" fill="#f1e6d0"/>';
+    svg += sydneyInset();
+    svg += '<text x="20" y="336" font-size="11" font-weight="700" fill="#1f4f7a">东南海岸全图</text>';
+    svg += '<rect x="8" y="344" width="384" height="548" rx="14" fill="#c5dbe8" stroke="#2a2218" stroke-width="1.6"/>';
+    svg += '<path d="' + land + '" fill="#ead9b4" stroke="#2a2218" stroke-width="1.5" stroke-linejoin="round"/>';
+    svg += '<path d="' + wobblePath(BAY) + '" fill="#c5dbe8" stroke="#2a2218" stroke-width="1.1"/>';
     driveDays.forEach((day, i) => {
       svg += '<path d="' + routes[i] + '" fill="none" stroke="' + day.color + '" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>';
     });
-    svg += '<text x="292" y="30" font-size="11" fill="#3f5a6a">Tasman Sea</text>';
-    svg += '<text x="36" y="628" font-size="11" fill="#3f5a6a">Bass Strait</text>';
-    svg += houseMark(-33.8688, 151.2093, "D1–D2·D8 悉尼", "#c45c26");
-    svg += houseMark(-35.0417, 150.6744, "D3 Jervis", "#3d7a32");
-    svg += houseMark(-36.2190, 150.1310, "D4 Narooma", "#c4921a");
-    svg += houseMark(-37.8810, 147.9940, "D5 Lakes", "#6b4c9a");
-    svg += houseMark(-37.8136, 144.9631, "D6–D7 墨尔本", "#1f5a7a");
+    svg += '<text x="292" y="368" font-size="11" fill="#3f5a6a">Tasman Sea</text>';
+    svg += '<text x="36" y="870" font-size="11" fill="#3f5a6a">Bass Strait</text>';
+    svg += houseMark(-33.8394, 151.2072, "D1–D2 北悉尼", "#c45c26");
+    svg += houseMark(-35.7945, 150.2288, "D3–D4 Malua Bay", "#3d7a32");
+    svg += houseMark(-37.8789, 148.0012, "D5 Lakes", "#6b4c9a");
+    svg += houseMark(-37.8116, 144.9542, "D6–D7 帝盛", "#1f5a7a");
     driveDays.forEach(day => {
       day.items.filter(i => i.lat && !i.stay && !i.optional).forEach(i => {
         const [x, y] = xy(i.lat, i.lng);
@@ -629,12 +711,11 @@ svg a { cursor: pointer; }
     ).join("");
 
     const stays = [
-      { label: "D1–D2 悉尼", sub: "9/29–9/30", lat: -33.8688, lng: 151.2093 },
-      { label: "D3 Jervis Bay", sub: "10/1", lat: -35.0417, lng: 150.6744 },
-      { label: "D4 Narooma", sub: "10/2", lat: -36.2190, lng: 150.1310 },
-      { label: "D5 Lakes Entrance", sub: "10/3", lat: -37.8810, lng: 147.9940 },
-      { label: "D6–D7 墨尔本市区", sub: "10/4–10/5", lat: -37.8136, lng: 144.9631 },
-      { label: "D8 悉尼", sub: "10/6 过夜", lat: -33.8688, lng: 151.2093 }
+      { label: "D1–D2 北悉尼美利通", sub: "80 Arthur St · 9/29–9/30", lat: -33.8394, lng: 151.2072 },
+      { label: "D3–D4 Malua Bay", sub: "12 Tallawang Ave · 10/1–10/3", lat: -35.7945, lng: 150.2288 },
+      { label: "D5 Lakes Entrance", sub: "2A Orme St · 10/3", lat: -37.8789, lng: 148.0012 },
+      { label: "D6–D7 墨尔本帝盛", sub: "615 Little Lonsdale · 10/4–10/6", lat: -37.8116, lng: 144.9542 },
+      { label: "D8 斯坦福德机场酒店", sub: "241 O'Riordan St · 10/6", lat: -33.9339, lng: 151.1928 }
     ];
     document.getElementById("stay-grid").innerHTML = stays.map(s =>
       '<a class="stay-card" target="_blank" rel="noopener" href="' + navHref(s.lat, s.lng, "driving") + '">' +
@@ -642,9 +723,9 @@ svg a { cursor: pointer; }
       "<p>" + esc(s.label) + "<span>" + esc(s.sub) + "</span></p></a>"
     ).join("");
 
-    const tripPath = stays.filter((s, i) => i < 5).map(s => s.lat + "," + s.lng).join("/");
+    const tripPath = stays.map(s => s.lat + "," + s.lng).join("/");
     document.getElementById("trip-map").src = "https://maps.google.com/maps?saddr=" + stays[0].lat + "," + stays[0].lng +
-      "&daddr=" + stays[4].lat + "," + stays[4].lng + "&hl=zh-CN&output=embed";
+      "&daddr=" + stays[3].lat + "," + stays[3].lng + "&hl=zh-CN&output=embed";
     document.getElementById("map-actions").innerHTML =
       '<a class="btn primary" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/' + tripPath + '">打开整趟住宿导航</a>' +
       '<a class="btn" target="_blank" rel="noopener" href="' + navHref(-33.8758, 151.2129) + '">取车门店</a>' +
@@ -727,13 +808,15 @@ svg a { cursor: pointer; }
       item.lines.map(l => "<p>" + esc(l) + "</p>").join("") +
       '<p class="meta">电话 ' + esc(item.phone) + "</p></div>";
     const hotels = b.hotels.map(h =>
-      '<div class="book"><span class="tag wait">待补充</span><h3>' + esc(h.nights) + " · " + esc(h.area) + "</h3>" +
-      "<p>" + esc(h.date) + " · " + esc(h.name) + "</p>" +
-      "<p>" + placeLink({ name: h.area, lat: h.lat, lng: h.lng }) + " · " + esc(h.address) + "</p>" +
-      '<p class="meta">电话 ' + esc(h.phone) + " · 澳洲酒店常见入住 15:00 / 退房 10:00</p></div>"
+      '<div class="book"><span class="tag ' + (h.status || "wait") + '">' + ((h.status === "ok") ? "已确认" : "待补充") + "</span>" +
+      "<h3>" + esc(h.nights) + " · " + esc(h.name) + "</h3>" +
+      "<p>" + esc(h.date) + "</p>" +
+      "<p>" + placeLink({ name: h.address, lat: h.lat, lng: h.lng }) + "</p>" +
+      '<p class="meta">电话 ' + esc(h.phone) + "</p>" +
+      (h.extra ? "<p>" + esc(h.extra) + "</p>" : "") + "</div>"
     ).join("");
     document.getElementById("bookings").innerHTML = b.flights.map(block).join("") + block(b.car) +
-      "<p class=\"meta\" style=\"margin:12px 0 0\">酒店（8 晚，店名都还没到）</p>" + hotels;
+      "<p class=\"meta\" style=\"margin:12px 0 0\">酒店</p>" + hotels;
   }
 
   function renderTodos() {
